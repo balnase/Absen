@@ -73,6 +73,7 @@ public class ActivityLogin extends AppCompatActivity {
     String sLat = "";
     String sLong = "";
     String sEmail = "";
+    String sUserid = "";
 
 
     @Override
@@ -210,6 +211,7 @@ public class ActivityLogin extends AppCompatActivity {
                         sLat = response.getString("glat");
                         sLong = response.getString("glong");
                         sToken = response.getString("access_token");
+                        sUserid = response.getString("userid");
                         //insertLogin();
                         createSession();
                     }else{
@@ -304,10 +306,10 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void createSession(){
-        //session.createUserSession(sNik,sName,sEmail,sToken);
-        session.createGPSLoc("-6.165038","106.817275","300");
-        //session.createGPSLoc(sLat,sLong,sRadius);
-        session.createUserSession("000/0511/093","Ricky Balnase Lukas",sEmail,"q1w2e3r4t5y6");
+        session.createUserSession(sNik,sName,sEmail,sToken,sUserid);
+        //session.createGPSLoc("-6.165038","106.817275","300");
+        session.createGPSLoc(sLat,sLong,sRadius);
+        //session.createUserSession("000/0511/093","Ricky Balnase Lukas",sEmail,"q1w2e3r4t5y6","1");
         Intent i = new Intent(getBaseContext(),MenuActivity.class);
         startActivity(i);
         finish();

@@ -140,6 +140,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     String strName = "";
     String sNtpTime = "";
     String sToken ="";
+    String sUserid ="";
+    String sDevice_model ="";
     ImageButton imgAbsen;
     PrefManager session;
     View mapView;
@@ -588,6 +590,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     private void getUserPref(){
         sName = session.getKEY_Name();
         sNik = session.getKEY_NIK();
+        sUserid = session.getKEY_Userid();
+        sDevice_model = dbx.deviceModel();
         txtNik.setText(session.getKEY_NIK());
         txtName.setText(session.getKEY_Name()+" ( "+strDevice+" ) ");
     }
@@ -720,7 +724,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         showDialog();
         pageState = "Loading";
         //url = "http://belumjadi.com/test/test6.php";
-        url = "http://192.168.2.34:81/api/login";
+        url = "http://192.168.2.34:81/api/upload";
         String device_model = dbx.deviceBrand()+" "+dbx.deviceModel();
         Log.d("debugtest2",url);
         getTrueTime().toString();
@@ -728,16 +732,18 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         TimeZone tz = TimeZone.getDefault();
         sNtpTime = _formatDate(trueTime, "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(tz.getDisplayName(false, TimeZone.SHORT)));
         Map<String, String> jsonParams = new HashMap<String, String>();
-        jsonParams.put("nik", sNik);
-        jsonParams.put("name", sName);
+        //jsonParams.put("nik", sNik);
+        //jsonParams.put("name", sName);
+        jsonParams.put("userid", strDevice);
         jsonParams.put("deviceid", strDevice);
+        jsonParams.put("device_model", device_model);
         jsonParams.put("img", "");
         jsonParams.put("glat", Double.toString(latti));
         jsonParams.put("glong", Double.toString(longi));
         jsonParams.put("radius", sDistance);
         jsonParams.put("addr", sAddress);
         jsonParams.put("fake", sFakeGPS);
-        jsonParams.put("time", sNtpTime);
+        //jsonParams.put("time", sNtpTime);
         jsonParams.put("token", sToken);
 
         queue = Volley.newRequestQueue(this);

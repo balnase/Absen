@@ -21,7 +21,8 @@ public class PrefManager {
     public static final String KEY_RADIUS = "radius";
     public static final String KEY_LAT = "lat";
     public static final String KEY_LONG = "long";
-    public static final String KEY_TOKEN = "email";
+    public static final String KEY_TOKEN = "token";
+    public static final String KEY_USERID = "userid";
     public static final String KEY_ACTIVITY = "activity";
     public static final String KEY_SEND_ACTIVITY = "SendActivity";
 
@@ -94,6 +95,11 @@ public class PrefManager {
         return email;
     }
 
+    public String getKEY_Userid(){
+        String userid = pref.getString(KEY_USERID,null);
+        return userid;
+    }
+
     public String getKEY_Activity(){
         String activity = pref.getString(KEY_ACTIVITY,null);
         return activity;
@@ -111,12 +117,13 @@ public class PrefManager {
         editor.commit();
     }
 
-    public void createUserSession(String nik, String name, String email, String token){
+    public void createUserSession(String nik, String name, String email, String token, String userid){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NIK, nik);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_TOKEN, token);
+        editor.putString(KEY_USERID, userid);
         editor.commit();
     }
 
