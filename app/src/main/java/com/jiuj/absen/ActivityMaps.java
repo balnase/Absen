@@ -732,9 +732,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         TimeZone tz = TimeZone.getDefault();
         sNtpTime = _formatDate(trueTime, "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(tz.getDisplayName(false, TimeZone.SHORT)));
         Map<String, String> jsonParams = new HashMap<String, String>();
-        //jsonParams.put("nik", sNik);
-        //jsonParams.put("name", sName);
-        jsonParams.put("userid", strDevice);
+        jsonParams.put("userid", sUserid);
         jsonParams.put("deviceid", strDevice);
         jsonParams.put("device_model", device_model);
         jsonParams.put("img", "");
