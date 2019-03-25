@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_select"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+
+
+    <!-- Title Of Song-->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Rihanna Love the way lie"
+        android:textColor="#040404"
+        android:typeface="sans"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"/>
+
+    <!-- Artist Name -->
+    <TextView
+        android:id="@+id/txtSub"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTitle"
+        android:textColor="#343434"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="bbb" />
+
+    <TextView
+        android:id="@+id/txtDetail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtSub"
+        android:textColor="#343434"
+        android:textSize="@dimen/_8ssp"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="aaa" />
+
+    <!-- Rightend Duration -->
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txtTitle"
+        android:layout_marginRight="5dip"
+        android:gravity="right"
+        android:text="5:45"
+        android:textColor="#10bcc9"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- Rightend Arrow -->
+    <ImageView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+
+        android:layout_marginRight="5dip">
+
+        <ImageView
+            android:id="@+id/imgIcon"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

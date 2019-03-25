@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@android:color/white" android:fitsSystemWindows="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ProgressBar android:id="@+id/progress_bar" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+        <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@+id/lyt_no_connection" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <ImageView android:layout_width="250.0dip" android:layout_height="250.0dip" android:src="@drawable/img_no_internet_satellite" />
+            <TextView android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Whoops!" />
+            <TextView android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" android:textColor="@color/colorPrimary" android:gravity="center" android:layout_width="300.0dip" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_large" android:text="No internet connections found. Check your connection or try again" />
+            <android.support.v7.widget.AppCompatButton android:textColor="@android:color/white" android:id="@+id/bt_retry" android:background="@drawable/btn_rounded_primary" android:layout_width="200.0dip" android:layout_height="wrap_content" android:layout_marginTop="@dimen/spacing_xlarge" android:text="@string/RETRY" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

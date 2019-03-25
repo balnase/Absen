@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fff2f3f4"
+    android:paddingLeft="@dimen/_15sdp"
+    android:paddingRight="@dimen/_15sdp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:id="@+id/imageView"
+        android:layout_marginTop="@dimen/_95sdp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:textColor="@color/blue"
+        android:id="@+id/App_name"
+        android:layout_marginTop="20.0dip"
+        android:textSize="20.0sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imageView"
+        android:text="A T T E N D A N C E" />
+
+    <TextView
+        android:textColor="@color/blue"
+        android:id="@+id/lb_version"
+        android:layout_marginTop="20.0dip"
+        android:textSize="20.0sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/App_name"
+        android:text="v 1.0" />
+
+</RelativeLayout>

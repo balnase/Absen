@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        tools:context="MainActivity" />
+
+    <RelativeLayout
+        android:id="@+id/rlClock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/_60sdp"
+        android:paddingRight="@dimen/_60sdp"
+        android:paddingTop="@dimen/_15sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/layout_bg"
+            android:layout_centerHorizontal="true">
+            <android.widget.TextClock
+                android:id="@+id/hk_time"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timeZone="GMT+0700"
+                android:format24Hour="HH:mm:ss"
+                android:format12Hour="@null"
+                android:layout_marginTop="@dimen/_minus2sdp"
+                android:text="sssss"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_30ssp"/>
+
+            <android.widget.TextView
+                android:id="@+id/ntpTime"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                android:text="aaa"
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:textColor="@color/main_orange_color"
+                android:textSize="@dimen/_34ssp"/>
+
+            <android.widget.TextClock
+                android:id="@+id/hk_day"
+                android:text="sssss"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timeZone="GMT+0700"
+                android:format24Hour="EEEE,  dd MMMM yyyy"
+                android:format12Hour="@null"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_10ssp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/info2"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/info"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/_20sdp"
+        android:paddingRight="@dimen/_50sdp"
+        android:paddingLeft="@dimen/_50sdp"
+        android:gravity="center_vertical" >
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_bg"
+            android:orientation="horizontal"
+            android:padding="5dip" >
+
+            <!-- Title Of Song-->
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/thumbnail"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:layout_marginLeft="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:text="ccc"
+                android:textColor="@color/white"
+                android:typeface="sans"
+                android:textSize="@dimen/_9ssp"
+                android:textStyle="bold"/>
+
+            <!-- Artist Name -->
+            <TextView
+                android:id="@+id/txtSub"
+                android:layout_marginLeft="@dimen/_1sdp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtTitle"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9ssp"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:text="aaaaa" />
+
+            <TextView
+                android:id="@+id/txtLocation"
+                android:layout_marginLeft="@dimen/_minus3sdp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtSub"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9ssp"
+                android:layout_marginTop="1dip"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:drawableLeft="@drawable/ic_location_on_white_18dp"
+                android:text="aaa" />
+
+            <!-- Rightend Duration -->
+
+            <TextView
+                android:id="@+id/txtTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/txtTitle"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="right"
+                android:text="5:45"
+                android:textColor="#10bcc9"
+                android:textSize="@dimen/_8ssp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <!-- Rightend Arrow -->
+            <ImageView android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                android:layout_centerVertical="true"/>
+
+            <!--  ListRow Left sied Thumbnail image -->
+            <LinearLayout android:id="@+id/thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_3sdp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/_2sdp">
+
+                <ImageView
+                    android:id="@+id/imgIcon"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:src="@drawable/profile2" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vw1"
+                android:layout_below="@+id/thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
+                android:background="@color/white"
+                android:layout_height="@dimen/_2sdp" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/vw1"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="left"
+                android:text="5:45"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_8ssp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/imgAbsen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:visibility="visible"
+            android:background="@drawable/fingerprint3"
+            android:layout_gravity="center"/>
+
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:indeterminateTint="@color/blue"
+            android:indeterminate="true" />
+        <!--
+        <Button
+            android:id="@+id/btnAbsen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            android:text="P H O T O    A B S E N"/> -->
+
+    </LinearLayout>
+</RelativeLayout>

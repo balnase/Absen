@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Attendance</string>
+    <string name="action_settings">Settings</string>
+    <string name="last_location_received_label">Last location received info</string>
+    <string name="latitude_label">Latitude:</string>
+    <string name="longitude_label">Longitude:</string>
+    <string name="last_update_label">Last Update:</string>
+    <string name="is_location_mock_label">Is Location Mock:</string>
+    <string name="are_mock_location_apps_present_label">Are Mock Location Apps Present:</string>
+    <string name="is_allow_mock_locations_on_label">Is Allow Mock Locations On:</string>
+    <string name="signup">SIGN UP</string>
+    <string name="signup_name">Name</string>
+    <string name="signup_nik">NIK</string>
+    <string name="signup_email">Email</string>
+    <string name="signup_pass">Password</string>
+    <string name="signup_confirm">Re-Type</string>
+    <string name="signup_login">"ALREADY HAVE AN ACCOUNT ? "</string>
+    <string name="login">LOGIN</string>
+    <string name="login_nik">NIK</string>
+    <string name="login_pass">Password</string>
+    <string name="login_forgot">FORGOT PASSWORD ?</string>
+    <string name="login_signup">"DON'T HAVE AN ACCOUNT ? "</string>
+    <string name="version">Attendance v1.0</string>
+    <string name="year"> \u00A9 2019</string>
+    <string name="hello_blank_fragment">This is the main fragment</string>
+    <string name="textwarn">Permission Mandatory for this App</string>
+    <string name="settings">Settings</string>
+
+    <string name="tt_time_gmt">TrueTime: %1$s [GMT]</string>
+    <string name="tt_time_pst">TrueTime: %1$s [PST]</string>
+    <string name="tt_time_device">Device Time: %1$s [PST]</string>
+
+    <string name="crash_dialog_title">Attendance v1.0</string>
+    <string name="crash_dialog_text">Terjadi kesalahan sehingga aplikasi berhenti. Harap membantu kami memperbaiki ini dengan mengirimkan data yang error,
+    yang harus Anda lakukan adalah <b>klik OK.</b></string>
+    <string name="crash_dialog_comment_prompt">Anda bisa menambahkan komentar tentang masalah di bawah ini:</string>
+    <string name="crash_dialog_ok_toast">Terima Kasih !</string>
+
+    <string name="google_maps_key">AIzaSyCFSuPIk88LNH9RMmZyrglhNyOyxXgKYh4</string>
+
+    <string name="RETRY">RETRY</string>
+
+    <array name="menuOptions">
+        <item>Check In</item>
+        <item>Report Attendance</item>
+    </array>
+</resources>

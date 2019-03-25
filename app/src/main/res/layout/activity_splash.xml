@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/mainLayout"
+    android:padding="@dimen/padding_splash"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorWhite"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/siluwete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView android:id="@+id/img2"
+            android:layout_width="220dip"
+            android:layout_height="220dip"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:src="@drawable/logo"
+            android:layout_weight="1.0"
+            android:layout_centerInParent="true" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/vw_center"
+        android:background="@drawable/line_dash_grey_20"
+        android:layout_width="wrap_content"
+        android:layout_height="5.0dip"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/siluwete"/>
+    <TextView
+        android:textColor="@color/blue"
+        android:id="@+id/lb_version"
+        android:layout_marginTop="20.0dip"
+        android:textSize="20.0sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/vw_center"
+        android:text="A T T E N D A N C E " />
+</RelativeLayout>

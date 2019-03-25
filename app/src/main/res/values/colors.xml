@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ff007bff</color>
+    <color name="colorPrimary2">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#992416</color>
+    <color name="list_divider">#272727</color>
+    <color name="blue">#ff007bff</color>
+    <color name="blue_overlay">#ff007bff</color>
+    <color name="grey_40">#ff999999</color>
+    <color name="grey_80">#ff37474f</color>
+    <color name="overlay_dark_50">#80000000</color>
+    <color name="grey_5">#fff2f2f2</color>
+    <color name="overlay_light_30">#4dffffff</color>
+    <color name="grey_20">#ffcccccc</color>
+    <color name="colorBlack">#fd21031e</color>
+    <color name="darkBlue">#ff007bff</color>
+    <color name="darkBlue2">#0D16EB</color>
+    <color name="ec_white">#ffffffff</color>
+    <color name="ec_grey4">#ffd8d8d8</color>
+    <color name="red">#ffea495f</color>
+    <color name="green">#ff5ccc78</color>
+
+    <color name="today">#4b82ff</color>
+    <color name="greyed_out">#c7c7c7</color>
+
+    <color name="summer">#44eebd82</color>
+    <color name="fall">#44d8d27e</color>
+    <color name="winter">#44a1c1da</color>
+    <color name="spring">#448da64b</color>
+
+    <color name="ic_launcher_background">#ffffffff</color>
+    <color name="subtext_color">#ffa8a8aa</color>
+</resources>

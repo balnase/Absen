@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+            <com.jiuj.absen.customfonts.MyTextView
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/text_color"
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="Meeting with Janet" />
+            <LinearLayout
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_1sdp">
+                <ImageView
+                    android:id="@+id/clock"
+                    android:background="@drawable/ic_clock_1"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
+                    android:layout_marginLeft="@dimen/_25sdp" />
+                <com.jiuj.absen.customfonts.MyTextView
+                    android:textSize="@dimen/_9ssp"
+                    android:textColor="@color/subtext_color"
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:textStyle="bold"
+                    android:text="8 - 10 am" />
+                <ImageView
+                    android:id="@+id/lolipop"
+                    android:background="@drawable/ic_check_circle_green_300_24dp"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
+                    android:layout_marginLeft="@dimen/_5sdp" />
+                <com.jiuj.absen.customfonts.MyTextView
+                    android:textSize="@dimen/_9ssp"
+                    android:textColor="@color/subtext_color"
+                    android:id="@+id/txtStatus"
+                    android:textStyle="bold"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:text="Starbucks" />
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_3sdp">
+                <ImageView
+                    android:id="@+id/clock2"
+                    android:background="@drawable/ic_point"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
+                    android:layout_marginLeft="@dimen/_25sdp" />
+                <com.jiuj.absen.customfonts.MyTextView
+                    android:textSize="@dimen/_6ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/subtext_color"
+                    android:id="@+id/txtAddr"
+                    android:singleLine="false"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:text="com.mikhaellopez.circularimageview.CircularImageView" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0">
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/banar1"
+                android:clickable="true"
+                android:src="@drawable/c"
+                android:layout_width="@dimen/_38sdp"
+                android:layout_height="@dimen/_38sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_23sdp" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:background="#ffe4e5e8"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginRight="@dimen/_25sdp" />
+</LinearLayout>

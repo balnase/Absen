@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/middle"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_marginTop="@dimen/_minus10sdp"
+                android:padding="@dimen/_40sdp"
+                android:src="@drawable/logo" />
+            <!-- <ImageView android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content"  /> -->
+            <com.jiuj.absen.Utils.BahnscriftTextView
+                android:id="@+id/txttitle"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_minus23sdp"
+                android:text="@string/login"
+                android:textColor="@color/darkBlue"
+                android:textSize="@dimen/_20ssp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/middle"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_centerVertical="true" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/middle"
+            android:background="@color/darkBlue"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/lin01"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_25sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/loginborder">
+
+                    <com.jiuj.absen.Utils.BahnscriftTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10.0sp"
+                        android:text="Email"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_30sdp"
+                        android:background="@android:color/transparent"
+                        android:paddingLeft="@dimen/_12sdp"
+                        android:paddingTop="@dimen/_9sdp"
+                        android:paddingBottom="@dimen/_9sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_11ssp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_9sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@drawable/loginborder"
+                    android:orientation="horizontal">
+
+                    <com.jiuj.absen.Utils.BahnscriftTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:text="Password"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <EditText
+                        android:id="@+id/pass"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15.0sp"
+                        android:layout_weight="1.0"
+                        android:background="@android:color/transparent"
+                        android:inputType="numberPassword"
+                        android:paddingLeft="12.0sp"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_8sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12.0sp" />
+
+                    <TextView
+                        android:id="@+id/show"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_visibility"
+                        android:drawablePadding="@dimen/_2sdp"
+                        android:gravity="center"
+                        android:paddingRight="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_minus3sdp"
+                        android:text="Show"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_9ssp" />
+
+                    <TextView
+                        android:id="@+id/hide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_hide"
+                        android:drawablePadding="@dimen/_2sdp"
+                        android:gravity="center"
+                        android:paddingRight="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_minus3sdp"
+                        android:text="Hide"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_9ssp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/login"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/loginbackborder"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:text="L O G I N"
+                    android:visibility="visible"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold" />
+
+                <com.dx.dxloadingbutton.lib.LoadingButton
+                    android:visibility="gone"
+                    android:id="@+id/loading_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    app:lb_resetAfterFailed="true"
+                    app:lb_btnRippleColor="#ffffff"
+                    app:lb_btnText="L O G I N"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/progBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:indeterminateTint="@color/white"
+                    android:indeterminate="true" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:gravity="center">
+
+                    <com.jiuj.absen.Utils.BahnscriftTextView
+                        android:id="@+id/txt_forgot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10.0sp"
+                        android:text="@string/login_forgot"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"
+                        android:textSize="12.0sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center">
+
+                    <com.jiuj.absen.Utils.BahnscriftTextView
+                        android:id="@+id/txt_signup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:text="@string/login_signup"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

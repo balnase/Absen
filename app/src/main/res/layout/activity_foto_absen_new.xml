@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:background="@color/colorWhite"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp">
+
+        <LinearLayout
+            android:id="@+id/lin2"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:background="@color/blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp">
+
+            <android.widget.TextClock
+                android:id="@+id/hk_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timeZone="GMT+0700"
+                android:format24Hour="HH:mm:ss"
+                android:format12Hour="@null"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_34ssp"/>
+
+            <android.widget.TextClock
+                android:id="@+id/hk_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timeZone="GMT+0700"
+                android:format24Hour="MMM dd, yyyy - EEEE"
+                android:format12Hour="@null"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_10ssp"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/lin2"
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:stretchColumns="*" >
+
+                <TableRow
+                    android:id="@+id/tableRowCentre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:padding="@dimen/_1sdp" >
+
+                    <TextView
+                        android:id="@+id/lbl_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Kumpulan"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/_14ssp" />
+
+                    <TextView
+                        android:id="@+id/lbl_nik"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="003/md/0001/18"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:layout_gravity="right"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/_14ssp" />
+
+                </TableRow>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:background="@color/blue"
+                    android:layout_height="@dimen/_2sdp" />
+
+            </TableLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl2"
+            android:layout_below="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:stretchColumns="*" >
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="300dp"
+                    android:src="@drawable/noimage3"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:background="@color/blue"
+                    android:layout_height="@dimen/_2sdp" />
+
+
+            </TableLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/lin01"
+            android:layout_below="@+id/rl2"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_gravity="center"
+                android:background="@color/blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="F O T O   A B S E N"
+                android:padding="@dimen/_7sdp"
+                android:textSize="@dimen/_10ssp"
+                android:id="@+id/btnPhoto"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_5sdp"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

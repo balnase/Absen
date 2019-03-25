@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:id="@+id/linTagihan">
+
+
+
+    <LinearLayout
+        android:id="@+id/lin2"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lblNopk2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="M E N U   A B S E N "
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14ssp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum = "1.0"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:layout_weight="0.2">
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name : "
+                    android:textSize="@dimen/_15ssp"
+                    android:layout_marginTop="@dimen/_5sdp"/>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edName"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:background="@drawable/rect"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:hint="Input Name"
+                android:textColor="@color/blue" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_width="fill_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/ic_launcher_background"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+
+        <Button
+            android:id="@+id/btnPhoto"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:text="Take Photo"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/custom_btn_arsenic" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
