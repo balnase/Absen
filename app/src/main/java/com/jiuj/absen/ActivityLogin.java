@@ -172,8 +172,8 @@ public class ActivityLogin extends AppCompatActivity {
 
         if(verifyInternet == true)
         {
-            //doLogin();
-            createSession();
+            doLogin();
+            //createSession();
         }else{
             hideProgBar();
             Toast.makeText(this,"No internet Access, Check your internet connection.",Toast.LENGTH_LONG).show();
@@ -190,7 +190,7 @@ public class ActivityLogin extends AppCompatActivity {
         Map<String, String> jsonParams = new HashMap<String, String>();
         jsonParams.put("email", sEmail);
         jsonParams.put("password", sPass);
-        //jsonParams.put("device_model", device_model);
+        jsonParams.put("device_model", device_model);
         jsonParams.put("deviceid", dbx.deviceid());
 
         RequestQueue queue = Volley.newRequestQueue(this);

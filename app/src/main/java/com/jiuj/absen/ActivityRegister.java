@@ -145,7 +145,7 @@ public class ActivityRegister extends AppCompatActivity {
         });
 
         session.createAcvtivity(TAG);
-        Toast.makeText(this,session.getKEY_Activity(),Toast.LENGTH_LONG).show();
+
     }
 
     private void getInternetState(){
