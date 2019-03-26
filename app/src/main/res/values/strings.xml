@@ -40,6 +40,7 @@
 
     <string name="RETRY">RETRY</string>
 
+
     <array name="menuOptions">
         <item>Check In</item>
         <item>Report Attendance</item>

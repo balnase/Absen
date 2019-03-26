@@ -102,12 +102,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public String getUploadURL(){
-        //String urlText="http://172.16.77.155:8084/top_andro/ProsesDest/incoming/UploadRequest.jsp?Query=<DEVICE_ID>|<ACTION_ID>|<QUERYSTR>";
-        String urlText="http://116.0.3.164:8080/top_andro/ProsesDest/incoming/UploadRequest.jsp?Query=<DEVICE_ID>|<ACTION_ID>|<QUERYSTR>";
-        sDeviceid = getMacAddr();
-        //sDeviceid = sID;
-        sDeviceid = sDeviceid.replace(":","");
-        urlText=urlText.replace("<DEVICE_ID>",sDeviceid);
+        String urlText="http://192.168.2.34:81/api";
+        //sDeviceid = sDeviceid.replace(":","");
+        //urlText=urlText.replace("<DEVICE_ID>",sDeviceid);
+        return urlText;
+    }
+
+    public String getImageURL(){
+        String urlText="http://192.168.2.34:81/images/android/";
+        //sDeviceid = sDeviceid.replace(":","");
+        //urlText=urlText.replace("<DEVICE_ID>",sDeviceid);
         return urlText;
     }
 

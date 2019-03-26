@@ -514,7 +514,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         i.putExtra("radiusx", session.getKEY_Radius());
         i.putExtra("distancex", sDistance);
         i.putExtra("timex", sTime);
-        i.putExtra("fakegps", sFakeGPS);
+        i.putExtra("fake", sFakeGPS);
         i.putExtra("token", sToken);
         startActivity(i);
         //finish();
@@ -706,7 +706,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         if(i1==i2){
             goToCamera();
         }else{
-            doCheckIn();
+            //doCheckIn();
+            goToCamera();
         }
     }
 
@@ -724,7 +725,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         showDialog();
         pageState = "Loading";
         //url = "http://belumjadi.com/test/test6.php";
-        url = "http://192.168.2.34:81/api/upload";
+        //url = "http://192.168.2.34:81/api/upload";
+        url = dbx.getUploadURL()+"/upload";
         String device_model = dbx.deviceBrand()+" "+dbx.deviceModel();
         Log.d("debugtest2",url);
         getTrueTime().toString();
