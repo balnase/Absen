@@ -270,7 +270,7 @@ public class ActivityRegister extends AppCompatActivity {
 
     private void validateReg(){
         sNik = edNik.getText().toString();
-        sName = edName.getText().toString().toUpperCase();
+        sName = edName.getText().toString();
         sEmail = edEmail.getText().toString();
         sPass = edPass.getText().toString();
         if (TextUtils.isEmpty(sNik)){
