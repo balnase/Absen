@@ -12,10 +12,42 @@
                     <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/_5sdp">
                         <com.github.chrisbanes.photoview.PhotoView
                             android:id="@+id/image"
-                            android:layout_width="fill_parent"
-                            android:layout_height="fill_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_200sdp"
+                            android:src="@drawable/image_12"
                             android:adjustViewBounds="true" />
                     </LinearLayout>
+                    <View
+                        android:id="@+id/vLoc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_margin="@dimen/spacing_middle"
+                        android:background="@drawable/line_dash_grey_20"/>
+                    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/_5sdp">
+                        <com.github.chrisbanes.photoview.PhotoView
+                            android:id="@+id/image2"
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:src="@drawable/image_12"
+                            android:adjustViewBounds="true" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_margin="@dimen/spacing_middle"
+                        android:background="@drawable/line_dash_grey_20"/>
+                    <TextView
+                        android:id="@+id/txtAddr"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/grey_40"
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_middle"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_marginRight="@dimen/_2sdp"
+                        android:text="Your transaction was successful" />
+
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </android.support.v7.widget.CardView>

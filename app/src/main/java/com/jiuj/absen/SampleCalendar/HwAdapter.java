@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jiuj.absen.R;
 
@@ -21,6 +22,8 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +47,7 @@ public class HwAdapter extends BaseAdapter {
     int calMaxP;
     int mnthlength;
     DateFormat df;
-    String itemvalue, curentDateString;
+    String itemvalue, curentDateString, formattedDate, dateToday ;
 
     public HwAdapter(Activity context, GregorianCalendar monthCalendar,ArrayList<HomeCollection> date_collection_arr) {
         this.date_collection_arr=date_collection_arr;
@@ -56,6 +59,9 @@ public class HwAdapter extends BaseAdapter {
         month.set(GregorianCalendar.DAY_OF_MONTH, 1);
         this.items = new ArrayList<String>();
         df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        formattedDate = df.format(c);
         curentDateString = df.format(selectedDate.getTime());
         refreshDays();
     }
@@ -94,8 +100,9 @@ public class HwAdapter extends BaseAdapter {
             dayView.setTextColor(Color.parseColor("#696969"));
         }
 
-        if (day_string.get(position).equals(curentDateString)) {
+        if (day_string.get(position).equals(formattedDate)) {
             v.setBackgroundColor(Color.parseColor("#ff5ccc78"));
+            //Toast.makeText(context, formattedDate,Toast.LENGTH_LONG).show();
         } else {
             v.setBackgroundColor(Color.parseColor("#ffffff"));
         }
@@ -153,9 +160,10 @@ public class HwAdapter extends BaseAdapter {
                     if ((Integer.parseInt(gridvalue) > 1) && (pos < firstDay)) {
                     } else if ((Integer.parseInt(gridvalue) < 7) && (pos > 28)) {
                     } else {
-                        v.setBackgroundColor(Color.parseColor("#343434"));
-                        v.setBackgroundResource(R.drawable.rounded_calender);
-                        txt.setTextColor(Color.parseColor("#696969"));
+                        v.setBackgroundColor(Color.parseColor("#F71B05"));
+                        //v.setBackgroundResource(R.drawable.rounded_calender);
+                        //txt.setTextColor(Color.parseColor("#696969"));
+                        txt.setTextColor(Color.parseColor("#ffffff"));
                     }
                 }
             }}

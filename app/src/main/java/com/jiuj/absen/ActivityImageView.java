@@ -51,21 +51,28 @@ public class ActivityImageView extends AppCompatActivity {
     NetworkChangeReceiver myReceiver;
     FloatingActionButton fab;
     RequestQueue requestQueue;
-    TextView txtName, txtTitle;
-    PhotoView photoView;
+    TextView txtName, txtTitle, txtAddr;
+    PhotoView photoView, photoViewLoc;
+    View vLoc;
     String imgxx, sNoref;
     Bitmap theImage;
     Button btn1;
     String urlMaps="";
+    String gLat = "";
+    String gLong = "";
+    String key = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test2);
         photoView = (PhotoView) findViewById(R.id.image);
+        photoViewLoc = (PhotoView) findViewById(R.id.image2);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         txtName = (TextView) findViewById(R.id.txtName);
         txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtAddr = (TextView) findViewById(R.id.txtAddr);
+        vLoc = (View) findViewById(R.id.vLoc);
         dbx = new DatabaseHelper(this);
         db=dbx.getWritableDatabase();
         myReceiver= new NetworkChangeReceiver();
@@ -74,38 +81,54 @@ public class ActivityImageView extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
         int loader = R.drawable.loader;
-        String lat="-6.145070";
-        String lon="106.896081";
-        String key = getResources().getString(R.string.google_maps_key);
-        String url = "https://maps.googleapis.com/maps/api/staticmap?" +
-                "markers=color:red|"+lat+","+lon+"&size=300x200" +
-                "&key="+key;
 
-        urlMaps = "https://maps.googleapis.com/maps/api/staticmap?center="+lat+","+lon+"&markers=color:red%7Clabel:C%7C"+lat+","+lon+"&zoom=15&size=200x100&key="+key;
+        key = getResources().getString(R.string.google_maps_key);
+        //String url = "https://maps.googleapis.com/maps/api/staticmap?" +
+         //       "markers=color:red|"+lat+","+lon+"&zoom=17&size=640x300" +
+          //      "&key="+key;
+
+        //urlMaps = "https://maps.googleapis.com/maps/api/staticmap?center="+lat+","+lon+"&markers=color:red%7Clabel:C%7C"+lat+","+lon+"&zoom=15&size=200x100&key="+key;
         ImageLoader imgLoader = new ImageLoader(getApplicationContext());
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             sNoref = getIntent().getStringExtra("key");
+            gLat = getIntent().getStringExtra("glat");
+            gLong = getIntent().getStringExtra("glong");
             if("".equalsIgnoreCase(getIntent().getStringExtra("key4"))){
-                photoView.setImageResource(R.drawable.noimage_new);
-            }else{
-                outImage= getIntent().getByteArrayExtra("key2");
-                ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-                theImage = BitmapFactory.decodeStream(imageStream);
-                //photoView.setImageBitmap(theImage);
-                //photoView.setImageResource(urlMaps);
-                //imgLoader.DisplayImage(urlMaps, loader, photoView);
+                //photoView.setImageResource(R.drawable.noimage_new);
+                photoView.setVisibility(View.GONE);
+                vLoc.setVisibility(View.GONE);
+                urlMaps = "https://maps.googleapis.com/maps/api/staticmap?" +
+                        "markers=color:red|"+gLat+","+gLong+"&zoom=17&size=640x300" +
+                        "&key="+key;
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
                         .placeholder(R.mipmap.ic_launcher_round)
                         .error(R.mipmap.ic_launcher_round);
-
-                Glide.with(this).load(url).apply(options).into(photoView);
+                Glide.with(this).load(urlMaps).apply(options).into(photoViewLoc);
+            }else{
+                photoView.setVisibility(View.VISIBLE);
+                vLoc.setVisibility(View.VISIBLE);
+                outImage= getIntent().getByteArrayExtra("key2");
+                ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
+                theImage = BitmapFactory.decodeStream(imageStream);
+                photoView.setImageBitmap(theImage);
+                //photoView.setImageResource(urlMaps);
+                //imgLoader.DisplayImage(urlMaps, loader, photoView);
+                urlMaps = "https://maps.googleapis.com/maps/api/staticmap?" +
+                        "markers=color:red|"+gLat+","+gLong+"&zoom=17&size=640x300" +
+                        "&key="+key;
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.mipmap.ic_launcher_round)
+                        .error(R.mipmap.ic_launcher_round);
+                Glide.with(this).load(urlMaps).apply(options).into(photoViewLoc);
             }
             String strName = getIntent().getStringExtra("key");
             strName = strName.replace("-", "\n");
             txtName.setText(getIntent().getStringExtra("key3"));
             txtTitle.setText(sNoref);
+            txtAddr.setText(getIntent().getStringExtra("addr"));
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

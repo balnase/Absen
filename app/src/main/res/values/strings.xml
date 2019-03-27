@@ -39,7 +39,7 @@
     <string name="google_maps_key">AIzaSyCFSuPIk88LNH9RMmZyrglhNyOyxXgKYh4</string>
 
     <string name="RETRY">RETRY</string>
-
+    <string name="short_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
 
     <array name="menuOptions">
         <item>Check In</item>

@@ -63,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table db_currLogin('deviceid' text,  'userid' text ,'createtime' datetime DEFAULT (datetime('now','localtime')))");
 
         db.execSQL("create table device_absen('noref' text, 'nama' text, " +
-                "'image' text, 'stsupload' text," +
+                "'image' text, 'stsupload' text, 'glat' text,'glong' text," +
                 "'uploadtime' datetime DEFAULT (datetime('now','localtime')), " +
                 "'createtime' datetime DEFAULT (datetime('now','localtime')))");
 

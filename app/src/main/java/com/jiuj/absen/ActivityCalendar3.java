@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +43,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +66,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
     private HwAdapter hwAdapter;
     private TextView tv_month, txtToday;
     private ProgressDialog pDialog;
-    List<String> iNik, iName, iAddr, iImage, iTime;
+    List<String> iNik, iName, iAddr, iImage, iTime, iLat, iLng;
     NetworkChangeReceiver myReceiver;
     ListView dataList;
     SQLiteDatabase db;
@@ -78,6 +86,9 @@ public class ActivityCalendar3 extends AppCompatActivity {
     String dateToday ="";
     String monthNow ="";
     String dateNow= "";
+    String encodedImage = "";
+    String sToken ="";
+    String sUserid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +178,12 @@ public class ActivityCalendar3 extends AppCompatActivity {
         });
         session.createAcvtivity(TAG);
         DownloadData();
+
+        /*
+        encodedImage = getByteArrayFromImageURL("http://belumjadi.com/eva/vae/images/FOOD/FOOD20180502015401190.jpg");
+        Toast.makeText(ActivityCalendar3.this,encodedImage,Toast.LENGTH_LONG);
+        Log.d("encode",encodedImage);
+        */
     }
     protected void setNextMonth() {
         if (cal_month.get(GregorianCalendar.MONTH) == cal_month.getActualMaximum(GregorianCalendar.MONTH)) {
@@ -199,20 +216,23 @@ public class ActivityCalendar3 extends AppCompatActivity {
     private void DownloadData(){
         showpDialog();
         List<Map<String,String>> listMap =  new ArrayList<Map<String, String>>();
+        sToken = session.getKEY_Token();
+        sUserid = session.getKEY_Userid();
         Map<String,String> map  = new HashMap<String,String>();
         try {
             map.put("nik", session.getKEY_NIK());
+            map.put("user_id", sUserid);
             map.put("deviceid", dbx.deviceid());
             map.put("from", sFrom);
             map.put("to", sTo);
+            map.put("token", sToken);
         } catch (Exception e) {
             e.printStackTrace();
         }
         listMap.add(map);
-        //url = "http://belumjadi.com/test/test8.php?nik="+session.getKEY_NIK()+"&deviceid="+dbx.deviceid()+"&from="+sFrom+"&to="+sTo;
-        url = "http://belumjadi.com/test/test8.php";
+        //url = "http://belumjadi.com/test/test8.php";
         Log.d("coba2", listMap.toString());
-
+        url = dbx.getUploadURL()+"/download-data";
         queue = Volley.newRequestQueue(this);
         req = new JsonArrayRequest(Request.Method.POST, url, new JSONArray(listMap),
                 new Response.Listener<JSONArray>() {
@@ -227,6 +247,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
                             iAddr = new ArrayList<String>();
                             iImage = new ArrayList<String>();
                             iTime = new ArrayList<String>();
+                            iLat = new ArrayList<String>();
+                            iLng = new ArrayList<String>();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject person = (JSONObject) response
                                         .get(i);
@@ -234,9 +256,17 @@ public class ActivityCalendar3 extends AppCompatActivity {
                                 if(status.equals("1")){
                                     iNik.add(person.getString("nik"));
                                     iName.add(person.getString("name"));
-                                    iAddr.add(person.getString("gaddr"));
-                                    iImage.add(person.getString("image"));
+                                    iAddr.add(person.getString("addr"));
+                                    if("".equalsIgnoreCase(person.getString("img_url"))){
+                                        encodedImage = "";
+                                    }else{
+                                        encodedImage = getByteArrayFromImageURL(dbx.getImageURL()+"/"+person.getString("img_url"));
+                                    }
+                                    iImage.add(encodedImage);
                                     iTime.add(person.getString("taketime"));
+                                    iLat.add(person.getString("glat"));
+                                    iLng.add(person.getString("glong"));
+                                    Log.d("coba3", iImage.toString());
                                 }else{}
                             }
                             if(status.equals("1")) {
@@ -276,7 +306,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         sTgl = dbx.getDateTime();
         for(int i=0; i<iNik.size(); i++) {
             String execstr="INSERT INTO device_absen VALUES ('"+iNik.get(i).toString()+"','"+iName.get(i).toString()+"','"+iImage.get(i).toString()+"'," +
-                    "'"+iAddr.get(i).toString()+"','"+iTime.get(i).toString()+"','"+sTgl+"')";
+                    "'"+iAddr.get(i).toString()+"','"+iLat.get(i).toString()+"','"+iLng.get(i).toString()+"','"+iTime.get(i).toString()+"','"+sTgl+"')";
             db.execSQL(execstr);
         }
         //cancelTimer();
@@ -300,7 +330,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         if (csr.moveToFirst()) {
             do
             {
-                AbsenClientList KFL = new AbsenClientList(csr.getString(1)+" - "+csr.getString(0), csr.getString(4), csr.getString(2), csr.getString(3));
+                AbsenClientList KFL = new AbsenClientList(csr.getString(1)+" - "+csr.getString(0), csr.getString(6), csr.getString(2), csr.getString(3),csr.getString(4),csr.getString(5));
                 imageArry.add(KFL);
             } while (csr.moveToNext());
         }
@@ -390,7 +420,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         if (csr.moveToFirst()) {
             do
             {
-                String qqq = csr.getString(4);
+                String qqq = csr.getString(6);
                 String asubstring = qqq.substring(0, 10);
                 HomeCollection.date_collection_arr.add( new HomeCollection(asubstring ,csr.getString(1)));
             } while (csr.moveToNext());
@@ -442,5 +472,24 @@ public class ActivityCalendar3 extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+    }
+
+    private String getByteArrayFromImageURL(String url) {
+        try {
+            URL imageUrl = new URL(url);
+            URLConnection ucon = imageUrl.openConnection();
+            InputStream is = ucon.getInputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = 0;
+            while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+                baos.write(buffer, 0, read);
+            }
+            baos.flush();
+            return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        } catch (Exception e) {
+            Log.d("Error", e.toString());
+        }
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,10 @@ import android.widget.TextView;
 import com.jiuj.absen.ActivityImageView;
 import com.jiuj.absen.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
@@ -25,6 +30,7 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
     int layoutResourceId;
     private SQLiteDatabase db = null;
     ArrayList<AbsenClientList> data = new ArrayList<AbsenClientList>();
+    String encodedImage = "";
 
     public AbsenClientAdapter(Context context, int layoutResourceId, ArrayList<AbsenClientList> data) {
         super(context, layoutResourceId, data);
@@ -64,6 +70,7 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
         if("".equalsIgnoreCase(picture._image)){
             holder.imgIcon.setImageResource(R.drawable.noimage_new);
         }else{
+            //encodedImage = getByteArrayFromImageURL(picture._image);
             holder.imgIcon.setImageBitmap(decodedByte);
         }
 
@@ -84,6 +91,9 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
                 i.putExtra("key2", imgx);
                 i.putExtra("key3", namex);
                 i.putExtra("key4", imgxx);
+                i.putExtra("glat", picture._lat);
+                i.putExtra("glong", picture._lng);
+                i.putExtra("addr", picture._addr);
                 context.startActivity(i);
                 //((Activity)context).finish();
             }
@@ -94,5 +104,24 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
     static class ImageHolder {
         ImageView imgIcon;
         TextView txtTitle, txtSub, txtDetail, txtRef;
+    }
+
+    private String getByteArrayFromImageURL(String url) {
+        try {
+            URL imageUrl = new URL(url);
+            URLConnection ucon = imageUrl.openConnection();
+            InputStream is = ucon.getInputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = 0;
+            while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+                baos.write(buffer, 0, read);
+            }
+            baos.flush();
+            return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        } catch (Exception e) {
+            Log.d("Error", e.toString());
+        }
+        return null;
     }
 }
