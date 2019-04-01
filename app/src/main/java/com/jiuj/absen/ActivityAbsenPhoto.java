@@ -1,10 +1,12 @@
 package com.jiuj.absen;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,12 +16,15 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -71,6 +76,7 @@ import static com.jiuj.absen.ActivityMaps.isNetworkConnected;
 
 public class ActivityAbsenPhoto extends AppCompatActivity {
     private static String TAG = ActivityAbsenPhoto.class.getName();
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     TextView txtName, txtTime, txtLoc, txtAddr;
     FloatingActionButton fabClose, fabUpload;
     PhotoView img;
@@ -155,11 +161,6 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startCameraActivity();
-                /*
-                Intent i = new Intent(ActivityAbsenPhoto.this, ActivityMaps.class);
-                startActivity(i);
-                finish();
-                */
             }
         });
         fabUpload.setOnClickListener(new View.OnClickListener() {
@@ -168,6 +169,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
                 getInternetState();
             }
         });
+        getDeviceID();
         initTrueTime(this);
         startCameraActivity();
     }
@@ -324,6 +326,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
         String device_model = dbx.deviceBrand()+" "+dbx.deviceModel();
         sToken = session.getKEY_Token();
         sUserid = session.getKEY_Userid();
+        sDeviceid = session.getKEY_DeviceID();
         String encodedImageData =getEncoded64ImageStringFromBitmap(bitmap3);
         encodedImageData = encodedImageData.replace(" ", "");
 
@@ -479,5 +482,17 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
         byte[] byteFormat = stream.toByteArray();
         String imgString = Base64.encodeToString(byteFormat, Base64.DEFAULT);
         return imgString;
+    }
+
+    private void getDeviceID(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSIONS_REQUEST_CODE);
+            }else{
+                sDeviceid = Build.getSerial();
+            }
+        }else{
+            sDeviceid = Build.SERIAL;
+        }
     }
 }

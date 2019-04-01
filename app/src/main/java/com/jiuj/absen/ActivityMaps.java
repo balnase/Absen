@@ -706,8 +706,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         if(i1==i2){
             goToCamera();
         }else{
-            //doCheckIn();
-            goToCamera();
+            doCheckIn();
+            //goToCamera();
         }
     }
 

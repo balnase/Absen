@@ -102,14 +102,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public String getUploadURL(){
-        String urlText="http://192.168.2.34:81/api";
-        //sDeviceid = sDeviceid.replace(":","");
-        //urlText=urlText.replace("<DEVICE_ID>",sDeviceid);
+        //String urlText="http://192.168.2.34:81/api";
+        String urlText="http://belumjadi.com/attendance/public/api";
         return urlText;
     }
 
     public String getImageURL(){
-        String urlText="http://192.168.2.34:81/images/android/";
+        //String urlText="http://192.168.2.34:81/images/android/";
+        String urlText="http://belumjadi.com/attendance/public/images/android/";
         //sDeviceid = sDeviceid.replace(":","");
         //urlText=urlText.replace("<DEVICE_ID>",sDeviceid);
         return urlText;
@@ -124,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(isNetworkAvailable()){
             try {
-                reachable = InetAddress.getByName("45.64.1.247").isReachable(10000);
+                reachable = InetAddress.getByName("45.64.1.247").isReachable(5000);
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             } catch (IOException e) {

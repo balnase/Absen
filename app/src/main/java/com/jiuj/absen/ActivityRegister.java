@@ -168,7 +168,8 @@ public class ActivityRegister extends AppCompatActivity {
 
     private void regUser(){
         //url = "http://belumjadi.com/test/test5.php";
-        url = "http://192.168.2.34:81/api/register";
+        //url = "http://192.168.2.34:81/api/register";
+        url = dbx.getUploadURL()+"/register";
         String device_model = dbx.deviceBrand()+" "+dbx.deviceModel();
 
         Log.d("debugtest2",url);

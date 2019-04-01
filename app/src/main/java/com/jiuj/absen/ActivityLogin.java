@@ -1,16 +1,21 @@
 package com.jiuj.absen;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
@@ -48,6 +53,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityLogin extends AppCompatActivity {
     private static String TAG = ActivityLogin.class.getName();
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     public static Activity aLogin;
     PermissionManager permissionManager;
     LoadingButton lbLogin;
@@ -97,6 +103,8 @@ public class ActivityLogin extends AppCompatActivity {
         dbx = new DatabaseHelper(this);
         db = dbx.getWritableDatabase();
         //edNik.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+
+        getDeviceID();
 
         myReceiver= new NetworkChangeReceiver();
 
@@ -183,7 +191,7 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void doLogin(){
         //url = "http://belumjadi.com/test/test6.php";
-        url = "http://192.168.2.34:81/api/login";
+        url = dbx.getUploadURL()+"/login";
 
         String device_model = dbx.deviceBrand()+" "+dbx.deviceModel();
         Log.d("debugtest2",url);
@@ -306,7 +314,7 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void createSession(){
-        session.createUserSession(sNik,sName,sEmail,sToken,sUserid);
+        session.createUserSession(sNik,sName,sEmail,sToken,sUserid,sDeviceid);
         //session.createGPSLoc("-6.165038","106.817275","300");
         session.createGPSLoc(sLat,sLong,sRadius);
         //session.createUserSession("000/0511/093","Ricky Balnase Lukas",sEmail,"q1w2e3r4t5y6","1");
@@ -326,6 +334,18 @@ public class ActivityLogin extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+    }
+
+    private void getDeviceID(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSIONS_REQUEST_CODE);
+            }else{
+                sDeviceid = Build.getSerial();
+            }
+        }else{
+            sDeviceid = Build.SERIAL;
+        }
     }
 
 }

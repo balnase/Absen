@@ -22,6 +22,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.jiuj.absen.Adapter.AbsenClientAdapter;
 import com.jiuj.absen.Adapter.AbsenClientList;
@@ -146,7 +149,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
                 String a = getLastDay(separated[0],separated[1]);
                 sFrom = separated[0]+"-"+separated[1]+"-01";
                 sTo = separated[0]+"-"+separated[1]+"-"+a;
-                DownloadData();
+                //DownloadData();
+                downloadData2();
             }
         });
 
@@ -173,11 +177,13 @@ public class ActivityCalendar3 extends AppCompatActivity {
                 String a = getLastDay(separated[0],separated[1]);
                 sFrom = separated[0]+"-"+separated[1]+"-01";
                 sTo = separated[0]+"-"+separated[1]+"-"+a;
-                DownloadData();
+                //DownloadData();
+                downloadData2();
             }
         });
         session.createAcvtivity(TAG);
-        DownloadData();
+        //DownloadData();
+        downloadData2();
 
         /*
         encodedImage = getByteArrayFromImageURL("http://belumjadi.com/eva/vae/images/FOOD/FOOD20180502015401190.jpg");
@@ -222,7 +228,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         try {
             map.put("nik", session.getKEY_NIK());
             map.put("user_id", sUserid);
-            map.put("deviceid", dbx.deviceid());
+            map.put("deviceid", session.getKEY_DeviceID());
             map.put("from", sFrom);
             map.put("to", sTo);
             map.put("token", sToken);
@@ -454,7 +460,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 sweetAlertDialog.dismiss();
-                DownloadData();
+                //DownloadData();
+                downloadData2();
             }
         });
         sweetAlertDialog.setCancelable(false);
@@ -491,5 +498,100 @@ public class ActivityCalendar3 extends AppCompatActivity {
             Log.d("Error", e.toString());
         }
         return null;
+    }
+
+    private void downloadData2(){
+        showpDialog();
+        //url = "http://belumjadi.com/test/test6.php";
+        sToken = session.getKEY_Token();
+        sUserid = session.getKEY_Userid();
+        //url = "http://192.168.2.34:81/api/login";
+        url = dbx.getUploadURL()+"/download-data";
+        String device_model = dbx.deviceBrand()+" "+dbx.deviceModel();
+        Log.d("debugtest2",url);
+
+        Map<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("nik", session.getKEY_NIK());
+        jsonParams.put("user_id", sUserid);
+        jsonParams.put("deviceid", dbx.deviceid());
+        jsonParams.put("from", sFrom);
+        jsonParams.put("to", sTo);
+        jsonParams.put("token", sToken);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
+                url, new JSONObject(jsonParams), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
+                Log.d("coba", response.toString());
+                try {
+                    HashMap<String, String> map;
+                    iNik = new ArrayList<String>();
+                    iName = new ArrayList<String>();
+                    iAddr = new ArrayList<String>();
+                    iImage = new ArrayList<String>();
+                    iTime = new ArrayList<String>();
+                    iLat = new ArrayList<String>();
+                    iLng = new ArrayList<String>();
+                    JSONArray array = response.getJSONArray("data");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject person = array.getJSONObject(i);
+                        status = person.getString("status");
+                        if(status.equals("1")){
+                            iNik.add(person.getString("nik"));
+                            iName.add(person.getString("name"));
+                            iAddr.add(person.getString("addr"));
+                            if("".equalsIgnoreCase(person.getString("img_url"))){
+                                encodedImage = "";
+                            }else{
+                                encodedImage = getByteArrayFromImageURL(dbx.getImageURL()+"/"+person.getString("img_url"));
+                            }
+                            iImage.add(encodedImage);
+                            iTime.add(person.getString("taketime"));
+                            iLat.add(person.getString("glat"));
+                            iLng.add(person.getString("glong"));
+                            Log.d("coba3", iImage.toString());
+                        }else{}
+                    }
+                    if(status.equals("1")) {
+                        saveToDB();
+                    }else{
+                        hidepDialog();
+                        setupCalendar();
+                        Toast.makeText(getApplicationContext(), "Data not found", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+                hidepDialog();
+                Log.d("debugtest",status);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.getClass().equals(NoConnectionError.class)){
+                    hidepDialog();
+                    String errStatus = "No internet Access, Check your internet connection.";
+                    Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                if (error.getClass().equals(TimeoutError.class)){
+                    hidepDialog();
+                    String errStatus = "Connection Timeout !! Please Try Again.";
+                    Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("User-agent", "My useragent");
+                return headers;
+            }
+        };
+        queue.add(req);
     }
 }

@@ -25,6 +25,7 @@ public class PrefManager {
     public static final String KEY_USERID = "userid";
     public static final String KEY_ACTIVITY = "activity";
     public static final String KEY_SEND_ACTIVITY = "SendActivity";
+    public static final String KEY_DEVICE = "DeviceID";
 
     public PrefManager(Context context){
         this._context = context;
@@ -90,6 +91,11 @@ public class PrefManager {
         return name;
     }
 
+    public String getKEY_DeviceID(){
+        String deviceid = pref.getString(KEY_DEVICE,null);
+        return deviceid;
+    }
+
     public String getKEY_Email(){
         String email = pref.getString(KEY_EMAIL,null);
         return email;
@@ -117,13 +123,14 @@ public class PrefManager {
         editor.commit();
     }
 
-    public void createUserSession(String nik, String name, String email, String token, String userid){
+    public void createUserSession(String nik, String name, String email, String token, String userid, String deviceid){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NIK, nik);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_TOKEN, token);
         editor.putString(KEY_USERID, userid);
+        editor.putString(KEY_DEVICE, deviceid);
         editor.commit();
     }
 
