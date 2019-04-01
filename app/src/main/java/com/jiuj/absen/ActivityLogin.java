@@ -104,7 +104,7 @@ public class ActivityLogin extends AppCompatActivity {
         db = dbx.getWritableDatabase();
         //edNik.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 
-        getDeviceID();
+
 
         myReceiver= new NetworkChangeReceiver();
 
@@ -169,6 +169,8 @@ public class ActivityLogin extends AppCompatActivity {
                 //doLogin();
             }
         });
+
+        getDeviceID();
     }
 
     private void getInternetState(){
