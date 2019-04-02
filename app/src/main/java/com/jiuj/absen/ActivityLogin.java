@@ -38,6 +38,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeErrorDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dx.dxloadingbutton.lib.LoadingButton;
 import com.jiuj.absen.Database.DatabaseHelper;
 import com.jiuj.absen.MenuPage.MenuActivity;
@@ -164,9 +166,9 @@ public class ActivityLogin extends AppCompatActivity {
         lbLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lbLogin.startLoading(); //start loading
-                getInternetState();
-                //doLogin();
+                //getInternetState();
+
+                doLogin();
             }
         });
 
@@ -192,6 +194,7 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void doLogin(){
+        showProgBar();
         //url = "http://belumjadi.com/test/test6.php";
         url = dbx.getUploadURL()+"/login";
 
@@ -264,12 +267,22 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void displayPrompt(String msg){
-        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE).setTitleText("").setContentText(msg).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismissWithAnimation();
-            }
-        }).show();
+        new AwesomeErrorDialog(this)
+                .setTitle("")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogErrorBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setCancelable(false)
+                .setButtonBackgroundColor(R.color.dialogErrorBackgroundColor)
+                .setButtonText(getString(R.string.dialog_ok_button))
+                .setErrorButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+
+                    }
+                })
+                .show();
+
     }
 
     private void insertLogin(){
@@ -311,7 +324,8 @@ public class ActivityLogin extends AppCompatActivity {
             edPass.requestFocus();
             return;
         }else{
-            getInternetState();
+            //getInternetState();
+            doLogin();
         }
     }
 

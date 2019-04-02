@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_height="@dimen/_280sdp"
         android:layout_margin="4dp"
         android:background="#343434"
         android:id="@+id/ll_calendar"
@@ -172,7 +172,7 @@
         <GridView
             android:id="@+id/gv_calendar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_300sdp"
+            android:layout_height="@dimen/_250sdp"
             android:background="#ffffff"
             android:cacheColorHint="#ffffff"
             android:gravity="center"
@@ -186,9 +186,40 @@
     <View
         android:id="@+id/line"
         android:layout_below="@+id/ll_calendar"
-        android:background="@color/blue"
+        android:background="@color/md_grey_400"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_2sdp"/>
+
+    <RelativeLayout
+        android:id="@+id/errorPanel"
+        android:layout_below="@+id/line"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/img2"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:src="@drawable/appointment"/>
+
+        <TextView
+            android:id="@+id/txtError2"
+            android:layout_below="@+id/img2"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="@dimen/_10ssp"
+            android:typeface="sans"
+            android:textColor="@color/grey_40"
+            android:text="No Attendance Found"/>
+
+    </RelativeLayout>
     <ListView
         android:id="@+id/listview"
         android:layout_below="@+id/line"

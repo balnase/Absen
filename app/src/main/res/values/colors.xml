@@ -35,4 +35,9 @@
 
     <color name="ic_launcher_background">#ffffffff</color>
     <color name="subtext_color">#ffa8a8aa</color>
+    <color name="colorLine">#ffe0e0e0</color>
+    <color name="md_blue_800">#ff1565c0</color>
+    <color name="md_grey_600">#ff757575</color>
+    <color name="md_grey_400">#ffbdbdbd</color>
+    <color name="md_white_1000">#ffffffff</color>
 </resources>

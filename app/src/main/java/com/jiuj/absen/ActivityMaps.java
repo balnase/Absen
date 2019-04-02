@@ -2,6 +2,7 @@ package com.jiuj.absen;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -51,6 +52,11 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeErrorDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -145,7 +151,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     ImageButton imgAbsen;
     PrefManager session;
     View mapView;
-    SweetAlertDialog pDialog;
+    //SweetAlertDialog pDialog;
+    private ProgressDialog pDialog;
     private GoogleApiClient googleApiClient;
 
     @Override
@@ -171,6 +178,9 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         rlInfo.setVisibility(View.GONE);
         rlClock.setVisibility(View.GONE);
         imgAbsen.setVisibility(View.GONE);
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Please wait...");
+        pDialog.setCancelable(false);
         dbx = new DatabaseHelper(this);
         db = dbx.getWritableDatabase();
         session = new PrefManager(this);
@@ -286,7 +296,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         if(retval > 0) {
             //System.out.println("f1 is greater than f2");
             setupMap2(latti,longi);
-            imgAbsen.setEnabled(true);
+            imgAbsen.setEnabled(false);
             imgAbsen.setAlpha(.4f);
         }else{
             setupMap(latti,longi);
@@ -463,16 +473,21 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void displayPrompt(String msg){
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE).setTitleText("");
-        sweetAlertDialog.setContentText(msg);
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                finish();
-            }
-        });
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
+        new AwesomeErrorDialog(this)
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogErrorBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setCancelable(false)
+                .setButtonBackgroundColor(R.color.dialogErrorBackgroundColor)
+                .setButtonText(getString(R.string.dialog_ok_button))
+                .setErrorButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        finish();
+                    }
+                })
+                .show();
+
     }
 
     private void init(){
@@ -668,17 +683,22 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void displayPromptGPS(String msg){
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE).setTitleText("");
-        sweetAlertDialog.setContentText(msg);
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                finish();
-            }
-        });
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
+        new AwesomeErrorDialog(this)
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogErrorBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setCancelable(false)
+                .setButtonBackgroundColor(R.color.dialogErrorBackgroundColor)
+                .setButtonText(getString(R.string.dialog_ok_button))
+                .setErrorButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        finish();
+                    }
+                })
+                .show();
+
     }
 
     private void initMap(){
@@ -695,7 +715,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
                     locationButton.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 30, 130);
+            layoutParams.setMargins(0, 0, 30, 150);
         }
     }
 
@@ -799,11 +819,15 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void showDialog(){
+        /*
         pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("Loading");
         pDialog.setCancelable(false);
         pDialog.show();
+        */
+        if (!pDialog.isShowing())
+            pDialog.show();
     }
 
     public void enableLoc() {
@@ -903,64 +927,97 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void dialogError(String msg){
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE).setTitleText("Internet Error");
-        sweetAlertDialog.setContentText(msg);
-        sweetAlertDialog.setCancelText("Cancel");
-        sweetAlertDialog.setConfirmText("Retry");
-        sweetAlertDialog.showCancelButton(true);
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-            }
-        });
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismiss();
-                doCheckIn();
-            }
-        });
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
+        new AwesomeInfoDialog(this)
+                .setTitle("Internet Error")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogErrorBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setCancelable(false)
+                .setPositiveButtonText("RETRY")
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setNegativeButtonText(getString(R.string.dialog_no_button))
+                .setNegativeButtonbackgroundColor(R.color.colorAccent)
+                .setNegativeButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        doCheckIn();
+                    }
+                })
+                .setNegativeButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                    }
+                })
+                .show();
     }
 
     private void displayPromptSuccess(String msg){
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.SUCCESS_TYPE).setTitleText("");
-        sweetAlertDialog.setContentText(msg);
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                Intent i = new Intent(ActivityMaps.this,MenuActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
+        new AwesomeSuccessDialog(this)
+                .setTitle("")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogSuccessBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_success, R.color.white)
+                .setCancelable(false)
+                .setPositiveButtonText(getString(R.string.dialog_yes_button))
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        //click
+                    }
+                })
+                .show();
+
     }
 
     private void displayPromptWarning(String msg){
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE).setTitleText("");
-        sweetAlertDialog.setContentText(msg);
-        sweetAlertDialog.setCancelText("Tidak");
-        sweetAlertDialog.setConfirmText("Ya");
-        sweetAlertDialog.showCancelButton(true);
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-            }
-        });
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismiss();
-                doRandom();
-            }
-        });
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
+        /*
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Check IN");
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage(msg);
+        alertDialog.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        alertDialog.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        doRandom();
+                    }
+                }
+        );
+        alertDialog.show();
+        */
+
+        new AwesomeInfoDialog(this)
+                .setTitle("Check IN")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogWarningBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.white)
+                .setCancelable(false)
+                .setPositiveButtonText(getString(R.string.dialog_yes_button))
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setNegativeButtonText(getString(R.string.dialog_no_button))
+                .setNegativeButtonbackgroundColor(R.color.colorAccent)
+                .setNegativeButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        doRandom();
+                    }
+                })
+                .setNegativeButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                    }
+                })
+                .show();
     }
 
     private void checkConnection() {
@@ -975,6 +1032,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             msg = "Sorry! Not connected to internet";
         }
+        /*
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE).setTitleText("");
         sweetAlertDialog.setContentText(msg);
         sweetAlertDialog.setConfirmText("OK");
@@ -986,6 +1044,24 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         });
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
+        */
+
+        new AwesomeWarningDialog(this)
+                .setTitle("")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogWarningBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.white)
+                .setCancelable(false)
+                .setButtonText(getString(R.string.dialog_ok_button))
+                .setButtonBackgroundColor(R.color.dialogNoticeBackgroundColor)
+                .setButtonText(getString(R.string.dialog_ok_button))
+                .setWarningButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        // click
+                    }
+                })
+                .show();
     }
 
     @Override

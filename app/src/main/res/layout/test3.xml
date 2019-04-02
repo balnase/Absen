@@ -52,7 +52,7 @@
                 android:text="aaa"
                 android:visibility="gone"
                 android:textStyle="bold"
-                android:textColor="@color/main_orange_color"
+                android:textColor="@color/blue"
                 android:textSize="@dimen/_34ssp"/>
 
             <android.widget.TextClock
@@ -81,8 +81,8 @@
         android:layout_above="@id/info"
         android:layout_centerHorizontal="true"
         android:paddingBottom="@dimen/_20sdp"
-        android:paddingRight="@dimen/_50sdp"
-        android:paddingLeft="@dimen/_50sdp"
+        android:paddingRight="@dimen/_60sdp"
+        android:paddingLeft="@dimen/_60sdp"
         android:gravity="center_vertical" >
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -128,7 +128,7 @@
                 android:layout_below="@+id/txtSub"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9ssp"
-                android:layout_marginTop="1dip"
+                android:layout_marginTop="@dimen/_minus1sdp"
                 android:layout_toRightOf="@+id/thumbnail"
                 android:drawableLeft="@drawable/ic_location_on_white_18dp"
                 android:text="aaa" />

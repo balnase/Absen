@@ -180,8 +180,8 @@ public class MenuActivity extends AppCompatActivity implements DuoMenuView.OnMen
         new AwesomeInfoDialog(this)
                 .setTitle(R.string.app_name)
                 .setMessage("Anda yakin akan keluar dari aplikasi ?")
-                .setColoredCircle(R.color.dialogNoticeBackgroundColor)
-                .setDialogIconAndColor(R.drawable.ic_notice, R.color.white)
+                .setColoredCircle(R.color.dialogWarningBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.white)
                 .setCancelable(false)
                 .setPositiveButtonText(getString(R.string.dialog_yes_button))
                 .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
@@ -199,7 +199,6 @@ public class MenuActivity extends AppCompatActivity implements DuoMenuView.OnMen
                 .setNegativeButtonClick(new Closure() {
                     @Override
                     public void exec() {
-                        //click
                     }
                 })
                 .show();

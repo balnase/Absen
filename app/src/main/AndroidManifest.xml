@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+        tools:replace="android:icon"
         android:name=".AppController"
         android:allowBackup="true"
         android:hardwareAccelerated="true"

@@ -63,8 +63,8 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         String a = picture._title;
         String[] separated = a.split(" ");
-        holder.txtSub.setText(picture._title.toUpperCase());
-        //holder.txtSub.setText(separated[1]);
+        //holder.txtSub.setText(picture._title.toUpperCase());
+        holder.txtSub.setText(separated[1]);
         holder.txtTitle.setText(picture._noref);
         holder.txtDetail.setText(picture._addr);
         if("".equalsIgnoreCase(picture._image)){

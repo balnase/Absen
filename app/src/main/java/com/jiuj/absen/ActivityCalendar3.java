@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.jiuj.absen.Adapter.AbsenClientAdapter;
 import com.jiuj.absen.Adapter.AbsenClientList;
 import com.jiuj.absen.Database.DatabaseHelper;
@@ -60,8 +63,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 public class ActivityCalendar3 extends AppCompatActivity {
     private static String TAG = ActivityCalendar3.class.getName();
     public static Activity aCal;
@@ -70,6 +71,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
     private TextView tv_month, txtToday;
     private ProgressDialog pDialog;
     List<String> iNik, iName, iAddr, iImage, iTime, iLat, iLng;
+    RelativeLayout rlError;
     NetworkChangeReceiver myReceiver;
     ListView dataList;
     SQLiteDatabase db;
@@ -105,7 +107,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
         ImageButton previous = (ImageButton) findViewById(R.id.ib_prev);
         tv_month = (TextView) findViewById(R.id.tv_month);
         txtToday = (TextView) findViewById(R.id.txtToday);
-        dataList = (ListView) this.findViewById(R.id.listview);
+        dataList = (ListView) findViewById(R.id.listview);
+        rlError = (RelativeLayout) findViewById(R.id.errorPanel);
         txtToday.setVisibility(View.VISIBLE);
         dbx = new DatabaseHelper(this);
         db = dbx.getWritableDatabase();
@@ -326,6 +329,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
     }
 
     private void displayLv(String strdate){
+        hideError();
         final ArrayList<AbsenClientList> imageArry = new ArrayList<AbsenClientList>();
         AbsenClientAdapter adapter;
         String fromDT = strdate+" 00:00:00";
@@ -446,26 +450,30 @@ public class ActivityCalendar3 extends AppCompatActivity {
     }
 
     private void dialogError(String msg){
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.ERROR_TYPE).setTitleText("Internet Error");
-        sweetAlertDialog.setContentText(msg);
-        sweetAlertDialog.setCancelText("Cancel");
-        sweetAlertDialog.showCancelButton(true);
-        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sDialog) {
-                sDialog.dismiss();
-            }
-        });
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismiss();
-                //DownloadData();
-                downloadData2();
-            }
-        });
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
+        new AwesomeInfoDialog(this)
+                .setTitle("Internet Error")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogErrorBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setCancelable(false)
+                .setPositiveButtonText("RETRY")
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setNegativeButtonText("CANCEL")
+                .setNegativeButtonbackgroundColor(R.color.colorAccent)
+                .setNegativeButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        downloadData2();
+                    }
+                })
+                .setNegativeButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -559,7 +567,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
                     }else{
                         hidepDialog();
                         setupCalendar();
-                        Toast.makeText(getApplicationContext(), "Data not found", Toast.LENGTH_LONG).show();
+                        showError();
+                        //Toast.makeText(getApplicationContext(), "Data not found", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -574,13 +583,15 @@ public class ActivityCalendar3 extends AppCompatActivity {
                 if (error.getClass().equals(NoConnectionError.class)){
                     hidepDialog();
                     String errStatus = "No internet Access, Check your internet connection.";
-                    Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
+                    dialogError(errStatus);
+                    //Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
                 }
 
                 if (error.getClass().equals(TimeoutError.class)){
                     hidepDialog();
                     String errStatus = "Connection Timeout !! Please Try Again.";
-                    Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
+                    dialogError(errStatus);
+                    //Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         }) {
@@ -593,5 +604,15 @@ public class ActivityCalendar3 extends AppCompatActivity {
             }
         };
         queue.add(req);
+    }
+
+    public void showError(){
+        rlError.setVisibility(View.VISIBLE);
+        dataList.setVisibility(View.GONE);
+    }
+
+    public void hideError(){
+        rlError.setVisibility(View.GONE);
+        dataList.setVisibility(View.VISIBLE);
     }
 }

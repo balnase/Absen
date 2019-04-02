@@ -28,6 +28,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeErrorDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.dx.dxloadingbutton.lib.LoadingButton;
 import com.jiuj.absen.Database.DatabaseHelper;
 import com.jiuj.absen.Receiver.NetworkChangeReceiver;
@@ -42,8 +44,6 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ActivityRegister extends AppCompatActivity {
     private static String TAG = ActivityRegister.class.getName();
@@ -140,7 +140,8 @@ public class ActivityRegister extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //lbRegister.startLoading(); //start loading
-                getInternetState();
+                //getInternetState();
+                regUser();
             }
         });
 
@@ -167,6 +168,7 @@ public class ActivityRegister extends AppCompatActivity {
     }
 
     private void regUser(){
+        showProgBar();
         //url = "http://belumjadi.com/test/test5.php";
         //url = "http://192.168.2.34:81/api/register";
         url = dbx.getUploadURL()+"/register";
@@ -249,14 +251,24 @@ public class ActivityRegister extends AppCompatActivity {
     }
 
     private void displayPrompt(String msg){
-        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE).setTitleText("").setContentText(msg).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                Intent i = new Intent(ActivityRegister.this,ActivityLogin.class);
-                startActivity(i);
-                finish();
-            }
-        }).show();
+        new AwesomeErrorDialog(this)
+                .setTitle("")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogErrorBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setCancelable(false)
+                .setButtonBackgroundColor(R.color.dialogErrorBackgroundColor)
+                .setButtonText(getString(R.string.dialog_ok_button))
+                .setErrorButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        Intent i = new Intent(ActivityRegister.this,ActivityLogin.class);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .show();
+
     }
 
     private void showProgBar(){

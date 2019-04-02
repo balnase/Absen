@@ -18,6 +18,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -42,6 +43,9 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeErrorDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.instacart.library.truetime.TrueTime;
 import com.jiuj.absen.Database.DatabaseHelper;
@@ -70,7 +74,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.jiuj.absen.ActivityMaps.isNetworkConnected;
 
@@ -93,6 +96,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     protected static final String PHOTO_TAKEN = "photo_taken";
     private ProgressDialog pDialog;
+    CountDownTimer waitTimer;
     String path2, sNoref, sTgl;
     File file2;
     Bitmap bitmap3;
@@ -312,6 +316,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
         }
         if(verifyInternet == true)
         {
+            setTimer();
             uploadPhoto();
         }else{
             Toast.makeText(this,"No internet Access, Check your internet connection.",Toast.LENGTH_LONG).show();
@@ -362,15 +367,18 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
                     msg = response.getString("msg");
                     if("1".equalsIgnoreCase(status)){
                         hidepDialog();
+                        cancelTimer();
                         displayPrompt(msg);
                     }else{
                         hidepDialog();
+                        cancelTimer();
                         displayPromptFailed(msg);
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     hidepDialog();
+                    cancelTimer();
                     Toast.makeText(getApplicationContext(),
                             "Error: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
@@ -386,6 +394,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
                 if (error.getClass().equals(NoConnectionError.class)){
                     String errStatus = "No internet Access, Check your internet connection.";
                     hidepDialog();
+                    cancelTimer();
                     Toast.makeText(getApplicationContext(),
                             errStatus.toString(), Toast.LENGTH_LONG).show();
                 }
@@ -393,6 +402,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
                 if (error.getClass().equals(TimeoutError.class)){
                     String errStatus = "Connection Timeout !! Please Try Again.";
                     hidepDialog();
+                    cancelTimer();
                     Toast.makeText(getApplicationContext(),
                             errStatus.toString(), Toast.LENGTH_LONG).show();
                 }
@@ -412,6 +422,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
     }
 
     private void displayPrompt(String msg){
+        /*
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE).setTitleText("").setContentText(msg).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -421,15 +432,55 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
                 finish();
             }
         }).show();
+        */
+
+        new AwesomeSuccessDialog(this)
+                .setTitle("")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogSuccessBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_info, R.color.white)
+                .setCancelable(false)
+                .setPositiveButtonText(getString(R.string.dialog_yes_button))
+                .setPositiveButtonbackgroundColor(R.color.dialogSuccessBackgroundColor)
+                .setPositiveButtonTextColor(R.color.white)
+                .setPositiveButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        ActivityMaps.aMaps.finish();
+                        Intent i = new Intent(ActivityAbsenPhoto.this,MenuActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .show();
     }
 
     private void displayPromptFailed(String msg){
+        /*
         new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE).setTitleText("").setContentText(msg).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 sweetAlertDialog.dismissWithAnimation();
             }
         }).show();
+        */
+
+        new AwesomeErrorDialog(this)
+                .setTitle("")
+                .setMessage(msg)
+                .setColoredCircle(R.color.dialogErrorBackgroundColor)
+                .setDialogIconAndColor(R.drawable.ic_dialog_error, R.color.white)
+                .setCancelable(true).setButtonText(getString(R.string.dialog_ok_button))
+                .setButtonBackgroundColor(R.color.dialogErrorBackgroundColor)
+                .setButtonText(getString(R.string.dialog_ok_button))
+                .setErrorButtonClick(new Closure() {
+                    @Override
+                    public void exec() {
+                        // click
+                    }
+                })
+                .show();
+
     }
 
     private void showpDialog() {
@@ -493,6 +544,27 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
             }
         }else{
             sDeviceid = Build.SERIAL;
+        }
+    }
+
+    private void setTimer(){
+        waitTimer = new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                queue.cancelAll(req);
+                hidepDialog();
+                Toast.makeText(ActivityAbsenPhoto.this,"Koneksi Internet Bermasalah, Harap coba kembali !!",Toast.LENGTH_LONG).show();
+            }
+        }.start();
+    }
+
+    private void cancelTimer(){
+        if(waitTimer != null) {
+            waitTimer.cancel();
+            waitTimer = null;
         }
     }
 }

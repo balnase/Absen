@@ -14,4 +14,7 @@
     <dimen name="big_gap">32dp</dimen>
     <dimen name="spacing_xlarge">35.0dip</dimen>
     <dimen name="spacing_medium">5.0dip</dimen>
+    <dimen name="font_body_s_size">12.0sp</dimen>
+    <dimen name="font_body_size">14.0sp</dimen>
+    <dimen name="font_body_xs_size">10.0sp</dimen>
 </resources>
