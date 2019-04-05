@@ -47,6 +47,7 @@ public class HwAdapter extends BaseAdapter {
     int calMaxP;
     int mnthlength;
     DateFormat df;
+    TextView eventDay;
     String itemvalue, curentDateString, formattedDate, dateToday ;
 
     public HwAdapter(Activity context, GregorianCalendar monthCalendar,ArrayList<HomeCollection> date_collection_arr) {
@@ -86,6 +87,7 @@ public class HwAdapter extends BaseAdapter {
             v = vi.inflate(R.layout.cal_item, null);
         }
         dayView = (TextView) v.findViewById(R.id.date);
+        eventDay = (TextView) v.findViewById(R.id.date2);
         String[] separatedTime = day_string.get(position).split("-");
         gridvalue = separatedTime[2].replaceFirst("^0*", "");
         if ((Integer.parseInt(gridvalue) > 1) && (position < firstDay)) {
@@ -102,6 +104,7 @@ public class HwAdapter extends BaseAdapter {
 
         if (day_string.get(position).equals(formattedDate)) {
             v.setBackgroundColor(Color.parseColor("#ff5ccc78"));
+            v.setBackgroundResource(R.drawable.bg_today);
             //Toast.makeText(context, formattedDate,Toast.LENGTH_LONG).show();
         } else {
             v.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -160,8 +163,14 @@ public class HwAdapter extends BaseAdapter {
                     if ((Integer.parseInt(gridvalue) > 1) && (pos < firstDay)) {
                     } else if ((Integer.parseInt(gridvalue) < 7) && (pos > 28)) {
                     } else {
-                        v.setBackgroundColor(Color.parseColor("#F71B05"));
-                        //v.setBackgroundResource(R.drawable.rounded_calender);
+                        //v.setBackgroundColor(Color.parseColor("#F71B05"));
+                        eventDay.setText(cal_obj.name);
+                        if("EVENTS".equalsIgnoreCase(cal_obj.description)){
+                            v.setBackgroundResource(R.drawable.bg_attendance);
+                        }else{
+                            v.setBackgroundResource(R.drawable.bg_holiday);
+                        }
+
                         //txt.setTextColor(Color.parseColor("#696969"));
                         txt.setTextColor(Color.parseColor("#ffffff"));
                     }

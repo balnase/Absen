@@ -207,7 +207,7 @@ public class ActivityAbsenListClient extends AppCompatActivity {
         if (csr.moveToFirst()) {
             do
             {
-                AbsenClientList KFL = new AbsenClientList(csr.getString(1)+" - "+csr.getString(0), csr.getString(4), csr.getString(2), csr.getString(3), csr.getString(5), csr.getString(6));
+                AbsenClientList KFL = new AbsenClientList(csr.getString(1)+" - "+csr.getString(0), csr.getString(4), csr.getString(2), csr.getString(3), csr.getString(5), csr.getString(6),csr.getString(6));
                 imageArry.add(KFL);
             } while (csr.moveToNext());
         }

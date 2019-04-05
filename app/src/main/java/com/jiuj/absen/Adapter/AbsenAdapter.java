@@ -68,6 +68,7 @@ public class AbsenAdapter extends ArrayAdapter<AbsenList>
                 i.putExtra("key2", imgx);
                 i.putExtra("key3", namex);
                 i.putExtra("key4", imgxx);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(i);
                 //((Activity)context).finish();
             }

@@ -94,7 +94,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -148,6 +150,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     String sToken ="";
     String sUserid ="";
     String sDevice_model ="";
+    String statusAtt = "";
     ImageButton imgAbsen;
     PrefManager session;
     View mapView;
@@ -214,6 +217,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
 
         session.createAcvtivity(TAG);
         sToken = session.getKEY_Token();
+        checkTime();
     }
 
     @Override
@@ -530,6 +534,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         i.putExtra("distancex", sDistance);
         i.putExtra("timex", sTime);
         i.putExtra("fake", sFakeGPS);
+        i.putExtra("status", statusAtt);
         i.putExtra("token", sToken);
         startActivity(i);
         //finish();
@@ -763,7 +768,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         jsonParams.put("radius", sDistance);
         jsonParams.put("addr", sAddress);
         jsonParams.put("fake", sFakeGPS);
-        //jsonParams.put("time", sNtpTime);
+        jsonParams.put("status", statusAtt);
         jsonParams.put("token", sToken);
 
         queue = Volley.newRequestQueue(this);
@@ -995,7 +1000,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         */
 
         new AwesomeInfoDialog(this)
-                .setTitle("Check IN")
+                .setTitle(statusAtt)
                 .setMessage(msg)
                 .setColoredCircle(R.color.dialogWarningBackgroundColor)
                 .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.white)
@@ -1075,5 +1080,51 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     public void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+    }
+
+    @Override
+    public void onUserLeaveHint() {
+        //session.logoutUser();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            finishAndRemoveTask();
+        }else{
+            finish();
+        }
+    }
+
+    private void checkTime(){
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c);
+        String[] sDate = formattedDate.split(" ");
+        String checkin = sDate[0]+" 08:00:00";
+        String checkout = sDate[0]+" 17:00:00";
+        Date date1 = new Date();
+        Date date2 = new Date();
+        Log.d("tanggal",checkin+" / "+checkout);
+        try {
+            date1 = input.parse(checkin);
+            date2 = input.parse(checkout);  // parse input
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(c.after(date1)){
+            if(c.before(date2)){
+                statusAtt = "CHECK IN";
+                ntpTime.setVisibility(View.VISIBLE);
+                ntpTime.setText(statusAtt);
+                ntpTime.setTextColor(getResources().getColor(R.color.green));
+            }else{
+                ntpTime.setVisibility(View.VISIBLE);
+                statusAtt = "CHECK OUT";
+                ntpTime.setText(statusAtt);
+                ntpTime.setTextColor(getResources().getColor(R.color.red));
+            }
+        }else{
+            statusAtt = "";
+            ntpTime.setVisibility(View.GONE);
+        }
     }
 }

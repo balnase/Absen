@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,7 @@ import com.jiuj.absen.R;
 import com.jiuj.absen.Receiver.ConnectivityReceiver;
 import com.jiuj.absen.Receiver.NetworkChangeReceiver;
 import com.jiuj.absen.Utils.PrefManager;
+import com.jiuj.absen.Utils.Utils;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout;
@@ -193,7 +195,12 @@ public class MenuActivity extends AppCompatActivity implements DuoMenuView.OnMen
                     @Override
                     public void exec() {
                         session.logoutUser();
-                        finish();
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                            finishAndRemoveTask();
+                        }else{
+                            finish();
+                        }
+
                     }
                 })
                 .setNegativeButtonClick(new Closure() {
@@ -249,6 +256,14 @@ public class MenuActivity extends AppCompatActivity implements DuoMenuView.OnMen
     public void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+        /*
+        if (Utils.isAppIsInBackground(getApplicationContext())) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                finishAndRemoveTask();
+            }else{
+                finish();
+            }
+        }
+        */
     }
-
 }

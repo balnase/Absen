@@ -49,6 +49,11 @@ import com.karan.churi.PermissionManager.PermissionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -105,8 +110,6 @@ public class ActivityLogin extends AppCompatActivity {
         dbx = new DatabaseHelper(this);
         db = dbx.getWritableDatabase();
         //edNik.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-
-
 
         myReceiver= new NetworkChangeReceiver();
 
@@ -361,6 +364,37 @@ public class ActivityLogin extends AppCompatActivity {
             }
         }else{
             sDeviceid = Build.SERIAL;
+        }
+        checkTime();
+    }
+
+    private void checkTime(){
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c);
+        String[] sDate = formattedDate.split(" ");
+        String checkin = sDate[0]+" 08:00:00";
+        String checkout = sDate[0]+" 17:00:00";
+        Date date1 = new Date();
+        Date date2 = new Date();
+        Log.d("tanggal",checkin+" / "+checkout);
+        try {
+            date1 = input.parse(checkin);
+            date2 = input.parse(checkout);  // parse input
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(c.after(date1)){
+            if(c.before(date2)){
+                Toast.makeText(this,"CHECK IN",Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this,"CHECK OUT",Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(this,"CANNOT LOGIN",Toast.LENGTH_LONG).show();
+
         }
     }
 

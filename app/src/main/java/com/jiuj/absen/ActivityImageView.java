@@ -1,5 +1,6 @@
 package com.jiuj.absen;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -7,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +37,7 @@ import com.jiuj.absen.Adapter.AbsenList;
 import com.jiuj.absen.Database.DatabaseHelper;
 import com.jiuj.absen.Receiver.NetworkChangeReceiver;
 import com.jiuj.absen.Utils.ImageLoader;
+import com.jiuj.absen.Utils.PrefManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,6 +48,7 @@ import java.util.Map;
 
 public class ActivityImageView extends AppCompatActivity {
     private static final String TAG = ActivityImageView.class.getSimpleName();
+    public static Activity aImage;
     private SQLiteDatabase db=null;
     private DatabaseHelper dbx=null;
     byte[] outImage;
@@ -53,6 +57,7 @@ public class ActivityImageView extends AppCompatActivity {
     RequestQueue requestQueue;
     TextView txtName, txtTitle, txtAddr;
     PhotoView photoView, photoViewLoc;
+    PrefManager session;
     View vLoc;
     String imgxx, sNoref;
     Bitmap theImage;
@@ -66,6 +71,7 @@ public class ActivityImageView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test2);
+        aImage = this;
         photoView = (PhotoView) findViewById(R.id.image);
         photoViewLoc = (PhotoView) findViewById(R.id.image2);
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -76,6 +82,7 @@ public class ActivityImageView extends AppCompatActivity {
         dbx = new DatabaseHelper(this);
         db=dbx.getWritableDatabase();
         myReceiver= new NetworkChangeReceiver();
+        session = new PrefManager(this);
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -133,9 +140,12 @@ public class ActivityImageView extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                session.createAcvtivity("ActivityCalendar3");
                 finish();
             }
         });
+
+
     }
 
     @Override
@@ -149,8 +159,6 @@ public class ActivityImageView extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             //db.close();
-            Intent i = new Intent(this,MainAbsen.class);
-            startActivity(i);
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -226,4 +234,14 @@ public class ActivityImageView extends AppCompatActivity {
         unregisterReceiver(myReceiver);
     }
 
+    /*
+    @Override
+    public void finish() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            super.finishAndRemoveTask();
+        }else{
+            super.finish();
+        }
+    }
+    */
 }

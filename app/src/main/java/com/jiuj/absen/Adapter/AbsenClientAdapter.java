@@ -17,12 +17,16 @@ import android.widget.TextView;
 
 import com.jiuj.absen.ActivityImageView;
 import com.jiuj.absen.R;
+import com.jiuj.absen.Utils.PrefManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
 {
@@ -31,6 +35,7 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
     private SQLiteDatabase db = null;
     ArrayList<AbsenClientList> data = new ArrayList<AbsenClientList>();
     String encodedImage = "";
+    PrefManager session;
 
     public AbsenClientAdapter(Context context, int layoutResourceId, ArrayList<AbsenClientList> data) {
         super(context, layoutResourceId, data);
@@ -43,6 +48,7 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
         AbsenClientAdapter.ImageHolder holder = null;
+        session = new PrefManager(context);
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -52,6 +58,7 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
             holder.txtSub = (TextView) row.findViewById(R.id.txtSub);
             holder.txtDetail = (TextView) row.findViewById(R.id.txtDetail);
             holder.txtRef = (TextView) row.findViewById(R.id.txtTime);
+            holder.txtStatus = (TextView) row.findViewById(R.id.txtStatus);
             holder.imgIcon = (ImageView) row.findViewById(R.id.imgIcon);
             row.setTag(holder);
         } else {
@@ -63,10 +70,20 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         String a = picture._title;
         String[] separated = a.split(" ");
+        String fxDate = "";
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat output = new SimpleDateFormat("MMM d, yyyy");
+        try {
+            Date date = input.parse(separated[0]);                 // parse input
+            fxDate = output.format(date);    // format output
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         //holder.txtSub.setText(picture._title.toUpperCase());
-        holder.txtSub.setText(separated[1]);
+        holder.txtSub.setText(fxDate+" ("+separated[1]+")");
         holder.txtTitle.setText(picture._noref);
         holder.txtDetail.setText(picture._addr);
+        holder.txtStatus.setText(picture._status);
         if("".equalsIgnoreCase(picture._image)){
             holder.imgIcon.setImageResource(R.drawable.noimage_new);
         }else{
@@ -94,6 +111,8 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
                 i.putExtra("glat", picture._lat);
                 i.putExtra("glong", picture._lng);
                 i.putExtra("addr", picture._addr);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                session.createAcvtivity("ActivityImageView");
                 context.startActivity(i);
                 //((Activity)context).finish();
             }
@@ -103,7 +122,7 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
 
     static class ImageHolder {
         ImageView imgIcon;
-        TextView txtTitle, txtSub, txtDetail, txtRef;
+        TextView txtTitle, txtSub, txtDetail, txtRef, txtStatus;
     }
 
     private String getByteArrayFromImageURL(String url) {

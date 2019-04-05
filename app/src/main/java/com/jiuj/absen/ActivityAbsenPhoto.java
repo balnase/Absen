@@ -567,4 +567,14 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
             waitTimer = null;
         }
     }
+
+    @Override
+    public void onUserLeaveHint() {
+        //session.logoutUser();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            finishAndRemoveTask();
+        }else{
+            finish();
+        }
+    }
 }

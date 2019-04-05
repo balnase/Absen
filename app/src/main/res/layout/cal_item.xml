@@ -23,8 +23,22 @@
             android:layout_margin="@dimen/_2sdp"
             android:gravity="center_vertical"
             android:padding="@dimen/_2sdp"
+            android:text="aaaaa"
             android:textColor="#3d3c3c"
             android:textSize="@dimen/_10ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/date2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_minus5sdp"
+            android:gravity="center"
+            android:padding="@dimen/_1sdp"
+            android:text=""
+            android:singleLine="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_7ssp"
             android:textStyle="bold" />
 
         <ImageView

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
@@ -44,6 +45,7 @@ import com.jiuj.absen.Receiver.NetworkChangeReceiver;
 import com.jiuj.absen.SampleCalendar.HomeCollection;
 import com.jiuj.absen.SampleCalendar.HwAdapter;
 import com.jiuj.absen.Utils.PrefManager;
+import com.jiuj.absen.Utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +65,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.jiuj.absen.ActivityImageView.aImage;
+
 public class ActivityCalendar3 extends AppCompatActivity {
     private static String TAG = ActivityCalendar3.class.getName();
     public static Activity aCal;
@@ -70,7 +74,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
     private HwAdapter hwAdapter;
     private TextView tv_month, txtToday;
     private ProgressDialog pDialog;
-    List<String> iNik, iName, iAddr, iImage, iTime, iLat, iLng;
+    List<String> iNik, iName, iAddr, iImage, iTime, iLat, iLng, iNote, iTitle, iDateHoli;
     RelativeLayout rlError;
     NetworkChangeReceiver myReceiver;
     ListView dataList;
@@ -129,7 +133,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String[] separated = b.split("-");
         String a = getLastDay(separated[0],separated[1]);
-        getToday();
+        //getToday();
+        checkHoliday();
         tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", cal_month));
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +191,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         });
         session.createAcvtivity(TAG);
         //DownloadData();
-        downloadData2();
+
 
         /*
         encodedImage = getByteArrayFromImageURL("http://belumjadi.com/eva/vae/images/FOOD/FOOD20180502015401190.jpg");
@@ -258,6 +263,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
                             iTime = new ArrayList<String>();
                             iLat = new ArrayList<String>();
                             iLng = new ArrayList<String>();
+                            iNote = new ArrayList<String>();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject person = (JSONObject) response
                                         .get(i);
@@ -275,7 +281,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
                                     iTime.add(person.getString("taketime"));
                                     iLat.add(person.getString("glat"));
                                     iLng.add(person.getString("glong"));
-                                    Log.d("coba3", iImage.toString());
+                                    iNote.add(person.getString("keterangan"));
+                                    Log.d("coba3", iLat.toString());
                                 }else{}
                             }
                             if(status.equals("1")) {
@@ -315,7 +322,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         sTgl = dbx.getDateTime();
         for(int i=0; i<iNik.size(); i++) {
             String execstr="INSERT INTO device_absen VALUES ('"+iNik.get(i).toString()+"','"+iName.get(i).toString()+"','"+iImage.get(i).toString()+"'," +
-                    "'"+iAddr.get(i).toString()+"','"+iLat.get(i).toString()+"','"+iLng.get(i).toString()+"','"+iTime.get(i).toString()+"','"+sTgl+"')";
+                    "'"+iAddr.get(i).toString()+"','"+iLat.get(i).toString()+"','"+iLng.get(i).toString()+"','"+iNote.get(i).toString()+"','"+iTime.get(i).toString()+"','"+sTgl+"')";
             db.execSQL(execstr);
         }
         //cancelTimer();
@@ -340,7 +347,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         if (csr.moveToFirst()) {
             do
             {
-                AbsenClientList KFL = new AbsenClientList(csr.getString(1)+" - "+csr.getString(0), csr.getString(6), csr.getString(2), csr.getString(3),csr.getString(4),csr.getString(5));
+                AbsenClientList KFL = new AbsenClientList(csr.getString(1)+" - "+csr.getString(0), csr.getString(7), csr.getString(2), csr.getString(3),csr.getString(4),csr.getString(5),csr.getString(6));
                 imageArry.add(KFL);
             } while (csr.moveToNext());
         }
@@ -371,13 +378,6 @@ public class ActivityCalendar3 extends AppCompatActivity {
             Toast.makeText(this,"No internet Access, Check your internet connection.",Toast.LENGTH_LONG).show();
         }
     }
-
-    /*
-    public void onPause(){
-        super.onPause();
-        session.logoutUser();
-    }
-    */
 
     @Override
     public void onBackPressed(){
@@ -419,6 +419,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         sFrom = sDate[0]+"-"+sDate[1]+"-01";
         sTo = formattedDate;
         txtToday.setText("Today : "+dateToday);
+        downloadData2();
     }
 
     private void setupCalendar(){
@@ -430,10 +431,21 @@ public class ActivityCalendar3 extends AppCompatActivity {
         if (csr.moveToFirst()) {
             do
             {
-                String qqq = csr.getString(6);
+                String qqq = csr.getString(7);
                 String asubstring = qqq.substring(0, 10);
-                HomeCollection.date_collection_arr.add( new HomeCollection(asubstring ,csr.getString(1)));
+                HomeCollection.date_collection_arr.add( new HomeCollection(asubstring ,csr.getString(1),"EVENTS"));
             } while (csr.moveToNext());
+        }
+
+        String selectHoliday = "SELECT * FROM db_holiday";
+        final Cursor cr = db.rawQuery(selectHoliday, null);
+        if (cr.moveToFirst()) {
+            do
+            {
+                String qqq = cr.getString(1);
+                String asubstring = qqq.substring(0, 10);
+                HomeCollection.date_collection_arr.add( new HomeCollection(asubstring ,cr.getString(0),"HOLIDAY"));
+            } while (cr.moveToNext());
         }
         /*
         HomeCollection.date_collection_arr.add( new HomeCollection("2018-07-08" ,"Diwali"));
@@ -487,6 +499,16 @@ public class ActivityCalendar3 extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+        /*
+        if (!Utils.isAppIsInBackground(this)) {
+            Log.d("testpause","paues");
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                finishAndRemoveTask();
+            }else{
+                finish();
+            }
+        }
+        */
     }
 
     private String getByteArrayFromImageURL(String url) {
@@ -514,6 +536,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
         sToken = session.getKEY_Token();
         sUserid = session.getKEY_Userid();
         //url = "http://192.168.2.34:81/api/login";
+        sFrom = sFrom+" 00:00:00";
+        sTo = sTo+" 24:00:00";
         url = dbx.getUploadURL()+"/download-data";
         String device_model = dbx.deviceBrand()+" "+dbx.deviceModel();
         Log.d("debugtest2",url);
@@ -542,6 +566,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
                     iTime = new ArrayList<String>();
                     iLat = new ArrayList<String>();
                     iLng = new ArrayList<String>();
+                    iNote = new ArrayList<String>();
                     JSONArray array = response.getJSONArray("data");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject person = array.getJSONObject(i);
@@ -559,7 +584,10 @@ public class ActivityCalendar3 extends AppCompatActivity {
                             iTime.add(person.getString("taketime"));
                             iLat.add(person.getString("glat"));
                             iLng.add(person.getString("glong"));
-                            Log.d("coba3", iImage.toString());
+                            String ket = person.getString("keterangan");
+                            ket = ket.trim();
+                            iNote.add(ket);
+                            Log.d("coba3", ket);
                         }else{}
                     }
                     if(status.equals("1")) {
@@ -614,5 +642,113 @@ public class ActivityCalendar3 extends AppCompatActivity {
     public void hideError(){
         rlError.setVisibility(View.GONE);
         dataList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onUserLeaveHint() {
+        String activ = session.getKEY_Activity();
+        if("ActivityImageView".equalsIgnoreCase(activ)){
+
+        }else{
+            //session.logoutUser();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                finishAndRemoveTask();
+            }else{
+                finish();
+            }
+        }
+    }
+
+    private void checkHoliday(){
+        String chkHoliday = dbx.checkHoliday();
+        if("".equalsIgnoreCase(chkHoliday)){
+            downloadHoliday();
+        }else{
+            getToday();
+        }
+    }
+
+    private void downloadHoliday(){
+        showpDialog();
+        sToken = session.getKEY_Token();
+        url = dbx.getUploadURL()+"/download-holiday";
+
+        Log.d("debugtest2",url);
+
+        Map<String, String> jsonParams = new HashMap<String, String>();
+        jsonParams.put("token", sToken);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
+                url, new JSONObject(jsonParams), new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
+                Log.d("coba", response.toString());
+                try {
+                    HashMap<String, String> map;
+                    iTitle = new ArrayList<String>();
+                    iDateHoli = new ArrayList<String>();
+                    JSONArray array = response.getJSONArray("data");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject person = array.getJSONObject(i);
+                        status = person.getString("status");
+                        if(status.equals("1")){
+                            iTitle.add(person.getString("title"));
+                            iDateHoli.add(person.getString("tanggal"));
+                            Log.d("coba3", iTitle.toString());
+                        }else{}
+                    }
+                    if(status.equals("1")) {
+                        saveToDBHoliday();
+                    }else{
+                        hidepDialog();
+                        setupCalendar();
+                        showError();
+                        //Toast.makeText(getApplicationContext(), "Data not found", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+                //hidepDialog();
+                Log.d("debugtest",status);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.getClass().equals(NoConnectionError.class)){
+                    hidepDialog();
+                    String errStatus = "No internet Access, Check your internet connection.";
+                    dialogError(errStatus);
+                    //Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                if (error.getClass().equals(TimeoutError.class)){
+                    hidepDialog();
+                    String errStatus = "Connection Timeout !! Please Try Again.";
+                    dialogError(errStatus);
+                    //Toast.makeText(getApplicationContext(), errStatus.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("User-agent", "My useragent");
+                return headers;
+            }
+        };
+        queue.add(req);
+    }
+
+    private void saveToDBHoliday(){
+        sTgl = dbx.getDateTime();
+        for(int i=0; i<iTitle.size(); i++) {
+            String execstr="INSERT INTO db_holiday VALUES ('"+iTitle.get(i).toString()+"','"+iDateHoli.get(i).toString()+"','"+sTgl+"')";
+            db.execSQL(execstr);
+        }
+        getToday();
     }
 }

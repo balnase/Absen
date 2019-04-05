@@ -29,6 +29,17 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/layout_bg"
             android:layout_centerHorizontal="true">
+            <android.widget.TextView
+                android:id="@+id/ntpTime"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="aaa"
+                android:visibility="visible"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_25ssp"/>
+
             <android.widget.TextClock
                 android:id="@+id/hk_time"
                 android:layout_gravity="center_horizontal"
@@ -37,23 +48,11 @@
                 android:timeZone="GMT+0700"
                 android:format24Hour="HH:mm:ss"
                 android:format12Hour="@null"
-                android:layout_marginTop="@dimen/_minus2sdp"
+                android:layout_marginTop="@dimen/_minus10sdp"
                 android:text="sssss"
                 android:textStyle="bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_30ssp"/>
-
-            <android.widget.TextView
-                android:id="@+id/ntpTime"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_minus5sdp"
-                android:text="aaa"
-                android:visibility="gone"
-                android:textStyle="bold"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/_34ssp"/>
 
             <android.widget.TextClock
                 android:id="@+id/hk_day"
@@ -128,7 +127,7 @@
                 android:layout_below="@+id/txtSub"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_9ssp"
-                android:layout_marginTop="@dimen/_minus1sdp"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_toRightOf="@+id/thumbnail"
                 android:drawableLeft="@drawable/ic_location_on_white_18dp"
                 android:text="aaa" />
@@ -177,7 +176,7 @@
                 android:id="@+id/vw1"
                 android:layout_below="@+id/thumbnail"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_3sdp"
                 android:background="@color/white"
                 android:layout_height="@dimen/_2sdp" />

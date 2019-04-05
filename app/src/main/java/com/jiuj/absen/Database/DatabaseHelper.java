@@ -39,6 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     String exestr="";
     String sDeviceid;
     String sID ="";
+    String sHoliday ="";
 
     private static final String DB_NAME = "ANDRO_KKM.DB";
     private static final int DB_VERSION = 1;
@@ -63,11 +64,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table db_currLogin('deviceid' text,  'userid' text ,'createtime' datetime DEFAULT (datetime('now','localtime')))");
 
         db.execSQL("create table device_absen('noref' text, 'nama' text, " +
-                "'image' text, 'stsupload' text, 'glat' text,'glong' text," +
+                "'image' text, 'stsupload' text, 'glat' text,'glong' text, 'status' text," +
                 "'uploadtime' datetime DEFAULT (datetime('now','localtime')), " +
                 "'createtime' datetime DEFAULT (datetime('now','localtime')))");
 
-
+        db.execSQL("create table db_holiday('title' text,'tanggal' datetime DEFAULT (datetime('now','localtime')) ,'createtime' datetime DEFAULT (datetime('now','localtime')))");
     }
 
     @Override
@@ -189,6 +190,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sID;
     }
 
+    public String checkHoliday(){
+        db=getWritableDatabase();
+        String selectQuery = "select title from db_holiday ";
+        Cursor csr = db.rawQuery(selectQuery, null);
+        if(csr !=null && csr.moveToFirst()){
+            sHoliday = csr.getString(0);
+        }else{
+            sHoliday = "";
+        }
+        return sID;
+    }
     public String getNIK(){
         db=getWritableDatabase();
         String sNik ="";
