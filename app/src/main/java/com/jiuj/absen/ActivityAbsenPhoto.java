@@ -116,6 +116,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
     String sNtpTime = "";
     String sToken = "";
     String sUserid = "";
+    String statusAtt = "";
     PrefManager session;
 
     @Override
@@ -159,6 +160,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
             sDistance = getIntent().getStringExtra("distancex");
             sTime = getIntent().getStringExtra("timex");
             sFakeGPS = getIntent().getStringExtra("fake");
+            statusAtt = getIntent().getStringExtra("status");
         }
 
         fabClose.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +196,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
                 onPhotoTaken();
             }
         }else{
+            session.createAcvtivity("ActivityMaps");
             ActivityMaps.aMaps.finish();
             startActivity(new Intent(ActivityAbsenPhoto.this, ActivityMaps.class));
             finish();
@@ -351,6 +354,7 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
             jsonParams.put("time", sNtpTime);
             jsonParams.put("token", sToken);
             jsonParams.put("img", encodedImageData);
+            jsonParams.put("status", statusAtt);
 
         listMap.add(jsonParams);
 
@@ -568,13 +572,20 @@ public class ActivityAbsenPhoto extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onUserLeaveHint() {
-        //session.logoutUser();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            finishAndRemoveTask();
+        String activ = session.getKEY_Activity();
+        if("ActivityAbsenPhoto".equalsIgnoreCase(activ)){
+
         }else{
-            finish();
+            //session.logoutUser();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                finishAndRemoveTask();
+            }else{
+                finish();
+            }
         }
     }
+
 }

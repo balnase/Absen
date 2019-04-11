@@ -47,27 +47,68 @@
                 android:layout_height="wrap_content"
                 android:timeZone="GMT+0700"
                 android:format24Hour="HH:mm:ss"
-                android:format12Hour="@null"
-                android:layout_marginTop="@dimen/_minus10sdp"
-                android:text="sssss"
+                android:format12Hour="HH:mm:ss"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                android:text=""
                 android:textStyle="bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_30ssp"/>
 
             <android.widget.TextClock
                 android:id="@+id/hk_day"
-                android:text="sssss"
+                android:text=""
                 android:layout_marginTop="@dimen/_minus5sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:timeZone="GMT+0700"
                 android:format24Hour="EEEE,  dd MMMM yyyy"
-                android:format12Hour="@null"
+                android:format12Hour="EEEE,  dd MMMM yyyy"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:textStyle="bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10ssp"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_2sdp"
+                android:background="@color/white"
+                android:layout_marginBottom="@dimen/_2sdp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_1sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:textColor="@color/green"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_10ssp"
+                    android:text="In 08:00"/>
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:background="@color/white"
+                    android:layout_marginLeft="@dimen/_7sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:text="Out 17:00"/>
+
+            </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>
@@ -100,7 +141,7 @@
                 android:layout_toRightOf="@+id/thumbnail"
                 android:layout_marginLeft="@dimen/_1sdp"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:text="ccc"
+                android:text=""
                 android:textColor="@color/white"
                 android:typeface="sans"
                 android:textSize="@dimen/_9ssp"
@@ -117,7 +158,7 @@
                 android:textSize="@dimen/_9ssp"
                 android:textStyle="bold"
                 android:layout_toRightOf="@+id/thumbnail"
-                android:text="aaaaa" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/txtLocation"
@@ -130,7 +171,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_toRightOf="@+id/thumbnail"
                 android:drawableLeft="@drawable/ic_location_on_white_18dp"
-                android:text="aaa" />
+                android:text="" />
 
             <!-- Rightend Duration -->
 
@@ -142,7 +183,7 @@
                 android:layout_alignTop="@+id/txtTitle"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:gravity="right"
-                android:text="5:45"
+                android:text=""
                 android:textColor="#10bcc9"
                 android:textSize="@dimen/_8ssp"
                 android:textStyle="bold"
@@ -189,7 +230,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:gravity="left"
-                android:text="5:45"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8ssp"
                 android:textStyle="bold"

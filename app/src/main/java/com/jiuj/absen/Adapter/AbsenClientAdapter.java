@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,7 +84,15 @@ public class AbsenClientAdapter extends ArrayAdapter<AbsenClientList>
         holder.txtSub.setText(fxDate+" ("+separated[1]+")");
         holder.txtTitle.setText(picture._noref);
         holder.txtDetail.setText(picture._addr);
-        holder.txtStatus.setText(picture._status);
+
+        if("CHECK IN".equalsIgnoreCase(picture._status)){
+            holder.txtStatus.setText(picture._status);
+            holder.txtStatus.setTextColor(Color.parseColor("#ff5ccc78"));
+        }else{
+            holder.txtStatus.setText(picture._status);
+            holder.txtStatus.setTextColor(Color.parseColor("#ffea495f"));
+        }
+
         if("".equalsIgnoreCase(picture._image)){
             holder.imgIcon.setImageResource(R.drawable.noimage_new);
         }else{

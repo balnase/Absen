@@ -41,6 +41,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
@@ -121,6 +122,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     int i2 = 0;
     boolean isMock;
     NetworkChangeReceiver myReceiver;
+    TextClock hk_Time, hk_Day;
     RequestQueue queue;
     JsonObjectRequest req;
     LocationManager locationManager;
@@ -151,6 +153,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     String sUserid ="";
     String sDevice_model ="";
     String statusAtt = "";
+    String sTimeZone = "";
     ImageButton imgAbsen;
     PrefManager session;
     View mapView;
@@ -172,6 +175,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         txtNik = (TextView) findViewById(R.id.txtSub);
         txtLoc = (TextView) findViewById(R.id.txtLocation);
         txtAddr = (TextView) findViewById(R.id.txtAddress);
+        hk_Day = (TextClock) findViewById(R.id.hk_day);
+        hk_Time = (TextClock) findViewById(R.id.hk_time);
         //btnAbsen = (Button) findViewById(R.id.btnAbsen);
         imgAbsen = (ImageButton) findViewById(R.id.imgAbsen);
         ntpTime = (TextView) findViewById(R.id.ntpTime);
@@ -212,8 +217,10 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
             enableLoc();
         }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        /*
         SimpleDateFormat fmt = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ssZ");
         fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+        */
 
         session.createAcvtivity(TAG);
         sToken = session.getKEY_Token();
@@ -523,6 +530,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void goToCamera(){
+        session.createAcvtivity("ActivityAbsenPhoto");
         sTime = dbx.getDateTime();
         Intent i = new Intent(ActivityMaps.this, ActivityAbsenPhoto.class);
         i.putExtra("namex", sName);
@@ -578,9 +586,10 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         Date trueTime = TrueTime.now();
         Date deviceTime = new Date();
         TimeZone tz = TimeZone.getDefault();
+        sTimeZone = TimeZone.getTimeZone(tz.getDisplayName(false, TimeZone.SHORT)).toString();
         String zzz = _formatDate(trueTime, "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone(tz.getDisplayName(false, TimeZone.SHORT)));
         //ntpTime.setText(_formatDate(trueTime, "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("GMT+07:00")));
-        ntpTime.setText(zzz);
+        //ntpTime.setText(zzz);
     }
 
     private String _formatDate(Date date, String pattern, TimeZone timeZone) {
@@ -1082,15 +1091,22 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         unregisterReceiver(myReceiver);
     }
 
+
     @Override
     public void onUserLeaveHint() {
-        //session.logoutUser();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            finishAndRemoveTask();
+        String activ = session.getKEY_Activity();
+        if("ActivityAbsenPhoto".equalsIgnoreCase(activ)){
+
         }else{
-            finish();
+            //session.logoutUser();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                finishAndRemoveTask();
+            }else{
+                finish();
+            }
         }
     }
+
 
     private void checkTime(){
         Date c = Calendar.getInstance().getTime();
@@ -1123,8 +1139,16 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
                 ntpTime.setTextColor(getResources().getColor(R.color.red));
             }
         }else{
-            statusAtt = "";
-            ntpTime.setVisibility(View.GONE);
+            statusAtt = "CHECK IN";
+            ntpTime.setVisibility(View.VISIBLE);
+            //ntpTime.setVisibility(View.GONE);
         }
+    }
+
+    private void setupClock(){
+        hk_Time.setFormat24Hour("HH:mm:ss");
+        hk_Time.setFormat12Hour("HH:mm:ss");
+        hk_Day.setFormat24Hour("EEEE,  dd MMMM yyyy");
+        hk_Day.setFormat12Hour("EEEE,  dd MMMM yyyy");
     }
 }

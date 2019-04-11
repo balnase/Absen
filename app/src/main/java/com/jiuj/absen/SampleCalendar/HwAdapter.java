@@ -164,10 +164,12 @@ public class HwAdapter extends BaseAdapter {
                     } else if ((Integer.parseInt(gridvalue) < 7) && (pos > 28)) {
                     } else {
                         //v.setBackgroundColor(Color.parseColor("#F71B05"));
-                        eventDay.setText(cal_obj.name);
-                        if("EVENTS".equalsIgnoreCase(cal_obj.description)){
+
+                        if("Attendance".equalsIgnoreCase(cal_obj.description)){
+                            eventDay.setText(cal_obj.description);
                             v.setBackgroundResource(R.drawable.bg_attendance);
                         }else{
+                            eventDay.setText(cal_obj.name);
                             v.setBackgroundResource(R.drawable.bg_holiday);
                         }
 

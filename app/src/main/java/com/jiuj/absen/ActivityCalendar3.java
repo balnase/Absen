@@ -157,8 +157,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
                 String a = getLastDay(separated[0],separated[1]);
                 sFrom = separated[0]+"-"+separated[1]+"-01";
                 sTo = separated[0]+"-"+separated[1]+"-"+a;
-                //DownloadData();
-                downloadData2();
+                //downloadData2();
             }
         });
 
@@ -185,8 +184,8 @@ public class ActivityCalendar3 extends AppCompatActivity {
                 String a = getLastDay(separated[0],separated[1]);
                 sFrom = separated[0]+"-"+separated[1]+"-01";
                 sTo = separated[0]+"-"+separated[1]+"-"+a;
-                //DownloadData();
-                downloadData2();
+
+                //downloadData2();
             }
         });
         session.createAcvtivity(TAG);
@@ -341,7 +340,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
         AbsenClientAdapter adapter;
         String fromDT = strdate+" 00:00:00";
         String toDT = strdate+" 24:00:00";
-        String selectQuery = "SELECT * FROM device_absen where uploadtime >='"+fromDT+"' and uploadtime<='"+toDT+"'";
+        String selectQuery = "SELECT * FROM device_absen where uploadtime >='"+fromDT+"' and uploadtime<='"+toDT+"' order by uploadtime";
         Log.d("listview",selectQuery);
         final Cursor csr = db.rawQuery(selectQuery, null);
         if (csr.moveToFirst()) {
@@ -433,7 +432,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
             {
                 String qqq = csr.getString(7);
                 String asubstring = qqq.substring(0, 10);
-                HomeCollection.date_collection_arr.add( new HomeCollection(asubstring ,csr.getString(1),"EVENTS"));
+                HomeCollection.date_collection_arr.add( new HomeCollection(asubstring ,csr.getString(1),"Attendance"));
             } while (csr.moveToNext());
         }
 

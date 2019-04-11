@@ -388,12 +388,12 @@ public class ActivityLogin extends AppCompatActivity {
 
         if(c.after(date1)){
             if(c.before(date2)){
-                Toast.makeText(this,"CHECK IN",Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"CHECK IN",Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(this,"CHECK OUT",Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"CHECK OUT",Toast.LENGTH_LONG).show();
             }
         }else{
-            Toast.makeText(this,"CANNOT LOGIN",Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"CANNOT LOGIN",Toast.LENGTH_LONG).show();
 
         }
     }
