@@ -1,11 +1,16 @@
 package com.jiuj.absen;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -47,6 +52,7 @@ import java.util.Map;
 
 public class ActivityRegister extends AppCompatActivity {
     private static String TAG = ActivityRegister.class.getName();
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     public static Activity aReg;
     LoadingButton lbRegister;
     TextView shows,hides,register,login;
@@ -67,6 +73,7 @@ public class ActivityRegister extends AppCompatActivity {
     String jEmail = "";
     String jPass = "";
     String msg = "";
+    String sDeviceid = "";
     PrefManager session;
 
     @Override
@@ -97,6 +104,8 @@ public class ActivityRegister extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        getDeviceID();
 
         shows.setOnClickListener(new View.OnClickListener()
         {
@@ -182,7 +191,7 @@ public class ActivityRegister extends AppCompatActivity {
         jsonParams.put("email", sEmail);
         jsonParams.put("pass", sPass);
         jsonParams.put("device_model", device_model);
-        jsonParams.put("deviceid", dbx.deviceid());
+        jsonParams.put("deviceid", sDeviceid);
 
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
@@ -193,7 +202,7 @@ public class ActivityRegister extends AppCompatActivity {
 
                 try {
                     status = response.getString("status");
-                    //msg = response.getString("msg");
+                    msg = response.getString("msg");
 
                     if("1".equalsIgnoreCase(status)){
                         //lbRegister.loadingSuccessful();
@@ -318,5 +327,17 @@ public class ActivityRegister extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+    }
+
+    private void getDeviceID(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSIONS_REQUEST_CODE);
+            }else{
+                sDeviceid = Build.getSerial();
+            }
+        }else{
+            sDeviceid = Build.SERIAL;
+        }
     }
 }

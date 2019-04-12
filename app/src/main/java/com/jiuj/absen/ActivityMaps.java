@@ -1140,6 +1140,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
             }
         }else{
             statusAtt = "CHECK IN";
+            ntpTime.setText(statusAtt);
             ntpTime.setVisibility(View.VISIBLE);
             //ntpTime.setVisibility(View.GONE);
         }
