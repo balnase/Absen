@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class HwAdapter extends BaseAdapter {
+    private LinearLayout linearLayout;
     private ArrayList<String> items;
     private GregorianCalendar selectedDate;
     private String gridvalue;
@@ -48,6 +52,7 @@ public class HwAdapter extends BaseAdapter {
     int mnthlength;
     DateFormat df;
     TextView eventDay;
+    TextView tvEvents;
     String itemvalue, curentDateString, formattedDate, dateToday ;
 
     public HwAdapter(Activity context, GregorianCalendar monthCalendar,ArrayList<HomeCollection> date_collection_arr) {
@@ -86,6 +91,21 @@ public class HwAdapter extends BaseAdapter {
             LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.cal_item, null);
         }
+
+        linearLayout = (LinearLayout) v.findViewById(R.id.linMain);
+        /*
+        tvEvents = new TextView(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams
+                ((int) LinearLayout.LayoutParams.WRAP_CONTENT,(int) LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0,-5,0,0);
+        tvEvents.setLayoutParams(lp);
+        tvEvents.setGravity(Gravity.CENTER);
+        tvEvents.setBackgroundResource(R.drawable.bg_holiday);
+        tvEvents.setTextColor(context.getResources().getColor(R.color.colorWhite));
+        tvEvents.setTextSize(6);
+        tvEvents.setVisibility(View.VISIBLE);
+        linearLayout.addView(tvEvents);
+        */
         dayView = (TextView) v.findViewById(R.id.date);
         eventDay = (TextView) v.findViewById(R.id.date2);
         String[] separatedTime = day_string.get(position).split("-");
@@ -164,17 +184,18 @@ public class HwAdapter extends BaseAdapter {
                     } else if ((Integer.parseInt(gridvalue) < 7) && (pos > 28)) {
                     } else {
                         //v.setBackgroundColor(Color.parseColor("#F71B05"));
-
                         if("Attendance".equalsIgnoreCase(cal_obj.description)){
                             eventDay.setText(cal_obj.description);
                             v.setBackgroundResource(R.drawable.bg_attendance);
+                            txt.setTextColor(Color.parseColor("#ffffff"));
                         }else{
                             eventDay.setText(cal_obj.name);
                             v.setBackgroundResource(R.drawable.bg_holiday);
+                            txt.setTextColor(Color.parseColor("#ffffff"));
                         }
 
                         //txt.setTextColor(Color.parseColor("#696969"));
-                        txt.setTextColor(Color.parseColor("#ffffff"));
+                        //txt.setTextColor(Color.parseColor("#ffffff"));
                     }
                 }
             }}

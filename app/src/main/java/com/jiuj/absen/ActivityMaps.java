@@ -1091,7 +1091,6 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         unregisterReceiver(myReceiver);
     }
 
-
     @Override
     public void onUserLeaveHint() {
         String activ = session.getKEY_Activity();
@@ -1106,7 +1105,6 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
-
 
     private void checkTime(){
         Date c = Calendar.getInstance().getTime();
