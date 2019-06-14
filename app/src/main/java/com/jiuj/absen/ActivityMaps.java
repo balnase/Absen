@@ -22,6 +22,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -64,7 +65,9 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -105,13 +108,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import io.michaelrocks.paranoid.Obfuscate;
+
+@Obfuscate
 public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = ActivityMaps.class.getName();
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     protected Location mLastLocation;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
     static final int REQUEST_LOCATION = 199;
     private GoogleMap map;
@@ -160,6 +168,8 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     //SweetAlertDialog pDialog;
     private ProgressDialog pDialog;
     private GoogleApiClient googleApiClient;
+    private boolean isContinue = false;
+    CountDownTimer waitTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,11 +227,42 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
             enableLoc();
         }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        /*
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(20 * 1000); // 20 seconds
+        locationRequest.setFastestInterval(10 * 1000); // 10 seconds
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        latti = location.getLatitude();
+                        longi = location.getLongitude();
+                        //map.clear();
+                        checkFakeGPS();
+
+                        /*
+                        if (!isContinue) {
+                            checkFakeGPS();
+                        }
+                        if (!isContinue && mFusedLocationClient != null) {
+                            mFusedLocationClient.removeLocationUpdates(locationCallback);
+                        }
+
+                    }
+                }
+            }
+        }; */
         /*
         SimpleDateFormat fmt = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ssZ");
         fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
         */
-
         session.createAcvtivity(TAG);
         sToken = session.getKEY_Token();
         checkTime();
@@ -259,6 +300,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         map.addMarker(new MarkerOptions().position(latLng2).title("Current Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.locator)));
         map.addMarker(new MarkerOptions().position(latLng).title("OFFICE"));
+        //setTimer();
         showButton();
     }
 
@@ -285,6 +327,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         map.addMarker(new MarkerOptions().position(latLng2).title("Current Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.locator)));
         map.addMarker(new MarkerOptions().position(latLng).title("OFFICE"));
         showButton();
+        //setTimer();
     }
 
     private void calDistance(){
@@ -337,6 +380,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
             }else{
             }
             */
+        //cancelTimer();
         Intent i = new Intent(this,MenuActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -353,6 +397,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
             }else{
             }
             */
+            //cancelTimer();
             Intent i = new Intent(this,MenuActivity.class);
             startActivity(i);
             overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -449,6 +494,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }else {
+
             mFusedLocationClient.getLastLocation()
                     .addOnCompleteListener(this, new OnCompleteListener<Location>() {
                         @Override
@@ -514,19 +560,36 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getAddress() {
-        geocoder = new Geocoder(this, Locale.getDefault());
+        geocoder = new Geocoder(this, Locale.ENGLISH);
+        String result = "";
         try {
             addresses = geocoder.getFromLocation(latti, longi, 1);
+            if(addresses != null && addresses.size() > 0){
+                String _address = addresses.get(0).getAddressLine(0);
+                Address address = addresses.get(0);
+                StringBuilder sb = new StringBuilder();
+                for (int i=0; i<address.getMaxAddressLineIndex(); i++){
+                    sb.append(address.getAddressLine(i));
+                }
+                sb.append(address.getLocality()).append("\n");
+                sb.append(address.getPostalCode()).append("\n");
+                sb.append(address.getCountryName()).append("\n");
+                //result = sb.toString();
+                result = _address;
+            }
+            /*
+            String address = addresses.get(0).getAddressLine(0);
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName();
+            */
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String address = addresses.get(0).getAddressLine(0);
-        String city = addresses.get(0).getLocality();
-        String state = addresses.get(0).getAdminArea();
-        String country = addresses.get(0).getCountryName();
-        String postalCode = addresses.get(0).getPostalCode();
-        String knownName = addresses.get(0).getFeatureName();
-        sAddress = address;
+
+        sAddress = result;
     }
 
     private void goToCamera(){
@@ -1068,7 +1131,6 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
                 .setCancelable(false)
                 .setButtonText(getString(R.string.dialog_ok_button))
                 .setButtonBackgroundColor(R.color.dialogNoticeBackgroundColor)
-                .setButtonText(getString(R.string.dialog_ok_button))
                 .setWarningButtonClick(new Closure() {
                     @Override
                     public void exec() {
@@ -1081,6 +1143,10 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
+        if(map != null){
+            map.clear();
+        }
+        getLastLocation();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(myReceiver, filter);
@@ -1088,7 +1154,13 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
 
     public void onPause() {
         super.onPause();
+        //cancelTimer();
         unregisterReceiver(myReceiver);
+    }
+
+    public void onStop(){
+        super.onStop();
+        //cancelTimer();
     }
 
     @Override
@@ -1140,6 +1212,7 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
             statusAtt = "CHECK IN";
             ntpTime.setText(statusAtt);
             ntpTime.setVisibility(View.VISIBLE);
+            ntpTime.setTextColor(getResources().getColor(R.color.green));
             //ntpTime.setVisibility(View.GONE);
         }
     }
@@ -1149,5 +1222,27 @@ public class ActivityMaps extends AppCompatActivity implements OnMapReadyCallbac
         hk_Time.setFormat12Hour("HH:mm:ss");
         hk_Day.setFormat24Hour("EEEE,  dd MMMM yyyy");
         hk_Day.setFormat12Hour("EEEE,  dd MMMM yyyy");
+    }
+
+    private void setTimer(){
+        waitTimer = new CountDownTimer(10000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                if(map!=null){
+                    map.clear();
+                }
+                getLastLocation();
+            }
+        }.start();
+    }
+
+    private void cancelTimer(){
+        if(waitTimer != null) {
+            waitTimer.cancel();
+            waitTimer = null;
+        }
     }
 }

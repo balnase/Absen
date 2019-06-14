@@ -1,20 +1,41 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'io.michaelrocks:paranoid-gradle-plugin:0.2.4'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.michaelrocks.paranoid'
 
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.jiuj.absen"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        lintOptions {
+            checkReleaseBuilds false
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile = file('release.keystore')
+            storePassword = 'paranoid'
+            keyAlias = 'paranoid'
+            keyPassword = 'paranoid'
+        }
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
             applicationVariants.all { variant ->
                 variant.outputs.all {
                     outputFileName = new File("Attendance.apk")
@@ -41,7 +62,6 @@ dependencies {
     implementation 'com.github.kishan2612:Material-Backdrop-Android:v1.1.0'
     implementation 'nl.psdcompany:duo-navigation-drawer:2.0.8'
     implementation 'com.github.blennerSilva:AwesomeDialog:2.0.5'
-    implementation 'com.github.f0ris.sweetalert:library:1.5.6'
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation 'com.github.StevenDXC:DxLoadingButton:2.1'
     implementation 'com.github.instacart.truetime-android:library:3.3'

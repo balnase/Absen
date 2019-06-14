@@ -30,12 +30,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeErrorDialog;
@@ -50,14 +52,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import io.michaelrocks.paranoid.Obfuscate;
+
+@Obfuscate
 public class ActivityLogin extends AppCompatActivity {
     private static String TAG = ActivityLogin.class.getName();
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
@@ -87,6 +92,7 @@ public class ActivityLogin extends AppCompatActivity {
     String sLong = "";
     String sEmail = "";
     String sUserid = "";
+    JSONObject jsonObject;
 
 
     @Override
@@ -117,6 +123,8 @@ public class ActivityLogin extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        getDeviceID();
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             permissionManager = new PermissionManager() {};
@@ -175,7 +183,7 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
 
-        getDeviceID();
+
     }
 
     private void getInternetState(){
@@ -208,7 +216,7 @@ public class ActivityLogin extends AppCompatActivity {
         jsonParams.put("email", sEmail);
         jsonParams.put("password", sPass);
         jsonParams.put("device_model", device_model);
-        jsonParams.put("deviceid", dbx.deviceid());
+        jsonParams.put("deviceid", sDeviceid);
 
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST,
@@ -245,6 +253,26 @@ public class ActivityLogin extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                NetworkResponse response = error.networkResponse;
+                if(response != null && response.data != null){
+                    String json = "";
+                    try {
+                        json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                    } catch (UnsupportedEncodingException e) {
+                        Log.i("ERROR",  response.toString());
+                    }
+                    try {
+                        jsonObject = new JSONObject(json);
+                        msg = jsonObject.getString("msg");
+                    }catch (JSONException ex) {
+                        Log.i("ERROR",  response.toString());
+                    }
+
+                    String errorString = new String(response.data);
+                    Log.i("ERROR", errorString);
+                    displayPrompt(msg);
+                    //Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_LONG).show();
+                }
                 if (error.getClass().equals(NoConnectionError.class)){
                     hideProgBar();
                     String errStatus = "No internet Access, Check your internet connection.";
@@ -281,7 +309,6 @@ public class ActivityLogin extends AppCompatActivity {
                 .setErrorButtonClick(new Closure() {
                     @Override
                     public void exec() {
-
                     }
                 })
                 .show();
@@ -289,7 +316,7 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     private void insertLogin(){
-        sDeviceid = dbx.deviceid();
+        //sDeviceid = dbx.deviceid();
         sTgl = dbx.getDateTime();
         String execstr="delete FROM device_login";
         db.execSQL(execstr);
@@ -361,6 +388,7 @@ public class ActivityLogin extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSIONS_REQUEST_CODE);
             }else{
                 sDeviceid = Build.getSerial();
+                //edEmail.setText(sDeviceid);
             }
         }else{
             sDeviceid = Build.SERIAL;

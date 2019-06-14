@@ -65,8 +65,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.michaelrocks.paranoid.Obfuscate;
+
 import static com.jiuj.absen.ActivityImageView.aImage;
 
+@Obfuscate
 public class ActivityCalendar3 extends AppCompatActivity {
     private static String TAG = ActivityCalendar3.class.getName();
     public static Activity aCal;
@@ -189,7 +192,7 @@ public class ActivityCalendar3 extends AppCompatActivity {
             }
         });
         session.createAcvtivity(TAG);
-        //DownloadData();
+        DownloadData();
 
 
         /*

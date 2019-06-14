@@ -37,7 +37,6 @@ import com.jiuj.absen.Receiver.NetworkChangeReceiver;
 import com.jiuj.absen.Utils.PrefManager;
 import com.jiuj.absen.Utils.Utils;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout;
 import nl.psdcompany.duonavigationdrawer.views.DuoMenuView;
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle;
@@ -225,25 +224,6 @@ public class MenuActivity extends AppCompatActivity implements DuoMenuView.OnMen
         navUsername.setText(session.getKEY_Name());
     }
 
-    private void displayPromptInternet(boolean isConnected){
-        String msg;
-        if (isConnected) {
-            msg = "Good! Connected to Internet";
-        } else {
-            msg = "Sorry! Not connected to internet";
-        }
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE).setTitleText("");
-        sweetAlertDialog.setContentText(msg);
-        sweetAlertDialog.setConfirmText("OK");
-        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismiss();
-            }
-        });
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
-    }
 
     @Override
     protected void onResume() {

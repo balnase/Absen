@@ -335,6 +335,7 @@ public class ActivityRegister extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_PERMISSIONS_REQUEST_CODE);
             }else{
                 sDeviceid = Build.getSerial();
+                edNik.setText(sDeviceid);
             }
         }else{
             sDeviceid = Build.SERIAL;

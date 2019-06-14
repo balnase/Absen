@@ -16,7 +16,7 @@
             android:layout_weight="0.5">
             <com.jiuj.absen.customfonts.MyTextView
                 android:textSize="@dimen/_10ssp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black"
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

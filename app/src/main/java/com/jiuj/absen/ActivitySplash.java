@@ -2,6 +2,7 @@ package com.jiuj.absen;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import java.util.Random;
 public class ActivitySplash extends AppCompatActivity {
     int i1 = 0;
     int i2 = 0;
+    String sRadio = "";
     Activity activ;
     PermissionManager permissionManager;
 
@@ -32,6 +34,8 @@ public class ActivitySplash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
+
+        sRadio = Build.getRadioVersion();
 
         Random r = new Random();
         i1 = r.nextInt(5);
@@ -60,7 +64,7 @@ public class ActivitySplash extends AppCompatActivity {
     private void checkRoot(){
         RootBeer rootBeer = new RootBeer(this);
         if (rootBeer.isRooted()) {
-            Toast.makeText(ActivitySplash.this, "Rooted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivitySplash.this, "Rooted"+" / "+sRadio, Toast.LENGTH_SHORT).show();
         } else {
             //Toast.makeText(ActivitySplash.this, "Not Rooted", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(ActivitySplash.this, ActivityLogin.class));
